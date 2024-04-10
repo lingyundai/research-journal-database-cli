@@ -19,10 +19,10 @@
         },
         {
             "type": "java",
-            "name": "Main",
+            "name": "Main with input file",
             "request": "launch",
             "args": [
-                "-S"
+                "-i", "/res/paper.sql"
             ],
             "mainClass": "Main",
             "projectName": "research-journal-database-cli_20d334b0"
