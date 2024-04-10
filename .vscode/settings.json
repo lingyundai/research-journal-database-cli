@@ -3,6 +3,8 @@
         "src"
     ],
     "java.project.referencedLibraries": [
-        "res/ojdbc11.jar"
+        "res/ojdbc11.jar",
+        "res/commons-cli-1.6.0.jar"
     ]
+    
 }

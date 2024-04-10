@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "research-journal-database-cli_ff46951a"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
@@ -14,6 +21,9 @@
             "type": "java",
             "name": "Main",
             "request": "launch",
+            "args": [
+                "-S"
+            ],
             "mainClass": "Main",
             "projectName": "research-journal-database-cli_20d334b0"
         },
