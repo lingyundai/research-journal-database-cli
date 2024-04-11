@@ -1,6 +1,7 @@
 import java.sql.*; 
 import java.math.*; 
 import java.io.*;
+import java.nio.file.*;
 import java.util.Scanner;
 import oracle.jdbc.driver.*;
 import org.apache.commons.cli.*;
@@ -47,8 +48,11 @@ class Main
             System.out.println("Failed to load JDBC/ODBC driver.");
             return;
         }
-        
+
         Scanner reader = new Scanner(System.in);
+
+                System.out.println();
+        System.out.println("Please enter credentials for signing in to Oracle SQL Server.");
 
         //Prompt user for username and password
         String user;
@@ -61,8 +65,6 @@ class Main
         System.out.println();
         System.out.print("password: ");
         password = reader.nextLine();
-
-        reader.close();
 
         //Connect to the database
         try {
@@ -81,8 +83,30 @@ class Main
                 System.out.println("Database Driver Name: "+dbmd.getDriverName());
                 System.out.println("Database Driver Version: "+dbmd.getDriverVersion());
             }
-            
+
+            // Now get the user prompt for the .sql file
+            System.out.println();
+            System.out.print("Please enter directory for the .sql file you would like to load: ");
+            String filename = reader.nextLine();
+            Path filepath = Paths.get(filename);
+            reader.close();
+
+            // Perform checks on file
+            // Some checks to perform:
+            // if file is a .sql file
+            // if file directory path is valid
+            // if file is not empty
+            if (filename == null || filepath == null ||
+                !Files.exists(filepath) || !filename.contains(".sql")) {
+                    System.out.println();
+                    System.out.println("That filename entered did not work.");
+                    System.out.println("Using default filepath for \"paper.sql\"");
+                    System.out.println();
+                    filename = inputFilePath;
+                    filepath = Paths.get(filename);
+            }
         } catch (Exception e) {
+            System.out.println();
             System.out.println("Could not connect to database with provided credentials");
         }
     }

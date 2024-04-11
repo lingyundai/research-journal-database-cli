@@ -22,7 +22,7 @@
             "name": "Main with input file",
             "request": "launch",
             "args": [
-                "-i", "/res/paper.sql"
+                "-i", "res/paper.sql"
             ],
             "mainClass": "Main",
             "projectName": "research-journal-database-cli_20d334b0"
