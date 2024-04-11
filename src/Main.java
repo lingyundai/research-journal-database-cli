@@ -105,6 +105,34 @@ class Main
                     filename = inputFilePath;
                     filepath = Paths.get(filename);
             }
+
+            FileInputStream inputFileStream = new FileInputStream(filename);
+            reader = new Scanner(inputFileStream);
+            int current = 0;
+            int maxCount = 5;
+            while (reader.hasNextLine() && current <= maxCount) {
+                try (Statement statement = conn.createStatement()) {
+                    String line = reader.nextLine();
+
+                    // Debug only:
+                    System.out.println(line);
+                    current++;
+
+                    // Next time: Create a regular expression
+                    // pattern compiler to remove single semicolon at end of each line
+                    
+                    //System.out.println(statement.toString());
+                    statement.executeQuery(line);
+                    statement.close();
+                } catch (SQLException e) {
+                    System.out.println(e);
+                    System.out.println("Could not successfully execute last command");
+                }
+            }
+
+            reader.close();
+            conn.close();
+
         } catch (Exception e) {
             System.out.println();
             System.out.println("Could not connect to database with provided credentials");

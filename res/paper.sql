@@ -1,20 +1,7 @@
 DROP TABLE AUTHORS CASCADE CONSTRAINTS;
 DROP TABLE PUBLICATIONS;
-
-CREATE TABLE PUBLICATIONS(
-        PUBLICATIONID VARCHAR2(4),
-	YEAR CHAR(4), 
-	TYPE VARCHAR2(5), 
-	TITLE VARCHAR2(100), 
-	SUMMARY VARCHAR2(2000), 
-	PRIMARY KEY (PUBLICATIONID));
-   
-CREATE TABLE AUTHORS(
-        PUBLICATIONID VARCHAR2(4), 
-	AUTHOR VARCHAR2(50),
-	PRIMARY KEY (PUBLICATIONID,AUTHOR),
-	FOREIGN KEY (PUBLICATIONID) REFERENCES PUBLICATIONS(PUBLICATIONID));
-
+CREATE TABLE PUBLICATIONS(PUBLICATIONID VARCHAR2(4), YEAR CHAR(4), TYPE VARCHAR2(5), TITLE VARCHAR2(100), SUMMARY VARCHAR2(2000), PRIMARY KEY (PUBLICATIONID));
+CREATE TABLE AUTHORS(PUBLICATIONID VARCHAR2(4), AUTHOR VARCHAR2(50), PRIMARY KEY (PUBLICATIONID,AUTHOR), FOREIGN KEY (PUBLICATIONID) REFERENCES PUBLICATIONS(PUBLICATIONID));
 Insert into PUBLICATIONS (PUBLICATIONID,YEAR,TYPE,TITLE,SUMMARY) values ('24','2016','long','Addressing Limited Data for Textual Entailment Across Domains','We seek to address the lack of labeled data (and high cost of annotation) for textual entailment in some domains. To that end, we first create (for experimental purposes) an entailment dataset for the clinical domain, and a highly competitive supervised entailment system, ENT, that is effective (out of the box) on two domains. We then explore self-training and active learning strategies to address the lack of labeled data. With self-training, we successfully exploit unlabeled data to improve over ENT by 15% F-score on the newswire domain, and 13% F-score on clinical data. On the other hand, our active learning experiments demonstrate that we can match (and even beat) ENT using only 6.6% of the training data in the clinical domain, and only 5.8% of the training data in the newswire domain.');
 Insert into PUBLICATIONS (PUBLICATIONID,YEAR,TYPE,TITLE,SUMMARY) values ('25','2016','long','Data Recombination for Neural Semantic Parsing','Modeling crisp logical regularities is crucial in semantic parsing, making it difficult for neural models with no task-specific prior knowledge to achieve good results. In this paper, we introduce data recombination, a novel framework for injecting such prior knowledge into a model. From the training data, we induce a high-precision synchronous context-free grammar, which captures important conditional independence properties commonly found in semantic parsing. We then train a sequence-to-sequence recurrent network (RNN) model with a novel attention-based copying mechanism on datapoints sampled from this grammar, thereby teaching the model about these structural properties. Data recombination improves the accuracy of our RNN model on three semantic parsing datasets, leading to new state-of-the-art performance on the standard GeoQuery dataset for models with comparable supervision.');
 Insert into PUBLICATIONS (PUBLICATIONID,YEAR,TYPE,TITLE,SUMMARY) values ('26','2017','long','Neural Belief Tracker: Data-Driven Dialogue State Tracking','One of the core components of modern spoken dialogue systems is the belief tracker, which estimates the user''s goal at every step of the dialogue. However, most current approaches have difficulty scaling to larger, more complex dialogue domains. This is due to their dependency on either: a) Spoken Language Understanding models that require large amounts of annotated training data; or b) hand-crafted lexicons for capturing some of the linguistic variation in users'' language. We propose a novel Neural Belief Tracking (NBT) framework which overcomes these problems by building on recent advances in representation learning. NBT models reason over pre-trained word vectors, learning to compose them into distributed representations of user utterances and dialogue context. Our evaluation on two datasets shows that this approach surpasses past limitations, matching the performance of state-of-the-art models which rely on hand-crafted semantic lexicons and outperforming them when such lexicons are not provided.');
@@ -106,7 +93,6 @@ Insert into PUBLICATIONS (PUBLICATIONID,YEAR,TYPE,TITLE,SUMMARY) values ('88','2
 Insert into PUBLICATIONS (PUBLICATIONID,YEAR,TYPE,TITLE,SUMMARY) values ('89','2017','short','A Generative Parser with a Discriminative Recognition Algorithm','Generative models defining joint distributions over parse trees and sentences are useful for parsing and language modeling, but impose restrictions on the scope of features and are often outperformed by discriminative models. We propose a framework for parsing and language modeling which marries a generative model with a discriminative recognition model in an encoder-decoder setting. We provide interpretations of the framework based on expectation maximization and variational inference, and show that it enables parsing and language modeling within a single implementation. On the English Penn Treen-bank, our framework obtains competitive performance on constituency parsing while matching the state-of-the-art single-model language modeling score.');
 Insert into PUBLICATIONS (PUBLICATIONID,YEAR,TYPE,TITLE,SUMMARY) values ('90','2017','short','Group Sparse CNNs for Question Classification with Answer Sets','Question classification is an important task with wide applications. However, traditional techniques treat questions as general sentences, ignoring the corresponding answer data. In order to consider answer information into question modeling, we first introduce novel group sparse autoencoders which refine question representation by utilizing group information in the answer set. We then propose novel group sparse CNNs which naturally learn question representation with respect to their answers by implanting group sparse autoencoders into traditional CNNs. The proposed model significantly outperform strong baselines on four datasets.');
 Insert into PUBLICATIONS (PUBLICATIONID,YEAR,TYPE,TITLE,SUMMARY) values ('91','2016','long','One for All: Towards Language Independent Named Entity Linking','Entity linking (EL) is the task of disambiguating mentions in text by associating them with entries in a predefined database of mentions (persons, organizations, etc). Most previous EL research has focused mainly on one language, English, with less attention being paid to other languages, such as Spanish or Chinese. In this paper, we introduce LIEL, a Language Independent Entity Linking system, which provides an EL framework which, once trained on one language, works remarkably well on a number of different languages without change. LIEL makes a joint global prediction over the entire document, employing a discriminative reranking framework with many domain and language-independent feature functions. Experiments on numerous benchmark datasets, show that the proposed system, once trained on one language, English, outperforms several state-of-the-art systems in English (by 4 points) and the trained model also works very well on Spanish (14 points better than a competitor system), demonstrating the viability of the approach.');
-
 Insert into AUTHORS (PUBLICATIONID,AUTHOR) values ('1','Hannah Rashkin');
 Insert into AUTHORS (PUBLICATIONID,AUTHOR) values ('1','Sameer Singh');
 Insert into AUTHORS (PUBLICATIONID,AUTHOR) values ('1','Yejin Choi');
@@ -442,7 +428,3 @@ Insert into AUTHORS (PUBLICATIONID,AUTHOR) values ('90','Liang Huang');
 Insert into AUTHORS (PUBLICATIONID,AUTHOR) values ('90','Mingbo Ma');
 Insert into AUTHORS (PUBLICATIONID,AUTHOR) values ('91','Avirup Sil');
 Insert into AUTHORS (PUBLICATIONID,AUTHOR) values ('91','Radu Florian');
-
-
-
-
