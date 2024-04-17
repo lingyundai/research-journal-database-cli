@@ -1,19 +1,8 @@
-/*
-Your command-line interface should include the following functionalities.
-1. The user can view the contents of each table. Show the name of each table and display the
-tuples of the table(s) that the user selects. (The user can select more than one tables to view.)
-
-2. The user can simply search by PUBLICATIONID and return all attributes from
-PUBLICATIONS table and include a number of authors field in the search result.
-
-3. The user can search the database by specifying one or more input attributes from {AUTHOR,
-TITLE, YEAR, TYPE} and specify one or more output attributes from both tables. In addition,
-the user can specify a field on which the search result should be sorted. Your search should
-consider pattern matching for input strings.
-
-4. Your program should exit only when the user chooses to.
-*/
 import javax.swing.*;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 public class Menu {
 
@@ -21,9 +10,11 @@ public class Menu {
 
     public static void createAndShowGUI() {
         //Create and set up the window.
-        menuFrame = new JFrame("HelloWorldSwing");
+        menuFrame = new JFrame("Research Journal Database");
         menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menuFrame.setPreferredSize(new Dimension(640, 480));
 
+        // Use the populateSetup function to add components
         populateSetup();
 
         //Display the window.
@@ -76,12 +67,10 @@ public class Menu {
         menuFrame.getContentPane().removeAll();
         menuFrame.pack();
         refreshFrame();
+        menuFrame.setPreferredSize(new Dimension(640, 480));
     }
 
-    private static void refreshFrame()
-    {
-        SwingUtilities.updateComponentTreeUI(menuFrame);
-    }
+    private static void refreshFrame() { SwingUtilities.updateComponentTreeUI(menuFrame); }
 
     private static void populateSQLFileMenu()
     {
@@ -109,13 +98,222 @@ public class Menu {
 
     private static void enterSQLFileButtonActionPerformed(java.awt.event.ActionEvent evt, String sqlFile)
     {
-        Driver.loadSqlFromFile(sqlFile);
+        if (Driver.loadSqlFromFile(sqlFile))
+        {
+            clearFrame();
+            populateMainMenu();
+        }
     }
 
-   /*
-    private static void populateMenu()
+    private static void populateMainMenu()
     {
+        JPanel menuPanel = new JPanel();
+        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
+        JLabel label = new JLabel("Main Menu");
+        menuPanel.add(label);
 
+        JButton tableContentsButton = new javax.swing.JButton("View Table Contents");
+        tableContentsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tableContentsButtonActionPerformed(evt);
+            }
+        });
+
+        menuPanel.add(tableContentsButton);
+
+        JButton publicationIdButton = new javax.swing.JButton("Search by PUBLICATIONID");
+        publicationIdButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                publicationIdButtonActionPerformed(evt);
+            }
+        });
+
+        menuPanel.add(publicationIdButton);
+
+        JButton attributeButton = new javax.swing.JButton("Search by one or more attributes");
+        attributeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                attributeButtonActionPerformed(evt);
+            }
+        });
+
+        menuPanel.add(attributeButton);
+
+        JButton exitButton = new javax.swing.JButton("Exit");
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Driver.closeConnection();
+                System.exit(0);
+            }
+        });
+
+        menuPanel.add(exitButton);
+        menuFrame.add(menuPanel);
     }
-    */
+
+    private static void tableContentsButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        clearFrame();
+        populateTableOptionsPanel();
+    }
+
+    private static void publicationIdButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        clearFrame();
+        populatePublicationIdPanel();
+    }
+    
+    private static void attributeButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        clearFrame();
+        populateAttributePanel();
+    }
+
+    private static void populateTableOptionsPanel()
+    {
+        JPanel contentsOptionPanel = new JPanel();
+
+        JLabel label = new JLabel("Select Tables to View:");
+        contentsOptionPanel.add(label);
+
+        JLabel publicationsOptionLabel = new JLabel("PUBLICATIONS");
+        contentsOptionPanel.add(publicationsOptionLabel);
+        
+        JCheckBox publicationsOptionCheckBox = new JCheckBox();
+        contentsOptionPanel.add(publicationsOptionCheckBox);
+
+        JLabel authorsOptionLabel = new JLabel("AUTHORS");
+        contentsOptionPanel.add(authorsOptionLabel);
+        
+        JCheckBox authorsOptionCheckBox = new JCheckBox();
+        contentsOptionPanel.add(authorsOptionCheckBox);
+        
+        JButton enterTableOptionsButton = new JButton("Enter");
+        enterTableOptionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                return;
+            }
+        });
+        contentsOptionPanel.add(enterTableOptionsButton);
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed();
+            }
+        });
+        contentsOptionPanel.add(backButton);
+        contentsOptionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentsOptionPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        menuFrame.add(contentsOptionPanel);
+    }
+
+    private static void populatePublicationIdPanel()
+    {
+        JPanel publicationOptionPanel = new JPanel();
+        publicationOptionPanel.setLayout(new BoxLayout(publicationOptionPanel, BoxLayout.Y_AXIS));
+        JLabel label = new JLabel("Enter a Publication ID to search for:");
+        publicationOptionPanel.add(label);
+
+        JTextField publicationIDField = new javax.swing.JTextField();
+        publicationOptionPanel.add(publicationIDField);
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed();
+            }
+        });
+        publicationOptionPanel.add(backButton);
+        publicationOptionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        publicationOptionPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        menuFrame.add(publicationOptionPanel);
+    }
+
+        private static void populateAttributePanel() 
+    {
+        JPanel attributePanel = new JPanel();
+        attributePanel.setLayout(new BoxLayout(attributePanel, BoxLayout.Y_AXIS));
+
+        JLabel label = new JLabel("Input fields:");
+        attributePanel.add(label);
+
+        JLabel authorInputLabel = new javax.swing.JLabel("AUTHOR:");
+        JTextField authorTextField = new javax.swing.JTextField();
+        attributePanel.add(authorInputLabel);
+        attributePanel.add(authorTextField);
+
+        JLabel titleInputLabel = new javax.swing.JLabel("TITLE:");
+        JTextField titleTextField = new javax.swing.JTextField();
+        attributePanel.add(titleInputLabel);
+        attributePanel.add(titleTextField);
+
+        JLabel yearInputLabel = new javax.swing.JLabel("YEAR:");
+        JTextField yearTextField = new javax.swing.JTextField();
+        attributePanel.add(yearInputLabel);
+        attributePanel.add(yearTextField);
+
+        JLabel typeInputLabel = new javax.swing.JLabel("TYPE:");
+        JTextField typeTextField = new javax.swing.JTextField();
+        attributePanel.add(typeInputLabel);
+        attributePanel.add(typeTextField);
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed();
+            }
+        });
+        attributePanel.add(backButton);
+        attributePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        attributePanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        menuFrame.add(attributePanel);
+    }
+
+    private static void populateOutputFieldPanel() 
+    {
+        JPanel outputPanel = new JPanel();
+        outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
+
+        JLabel label = new JLabel("Output fields:");
+        outputPanel.add(label);
+
+        JCheckBox publicationIdOptionCheckbox = new JCheckBox("PUBLICATIONID");
+        outputPanel.add(publicationIdOptionCheckbox);
+
+        JCheckBox authorOptionCheckbox = new JCheckBox("AUTHOR");
+        outputPanel.add(authorOptionCheckbox);
+
+        JCheckBox titleOptionCheckbox = new JCheckBox("TITLE");
+        outputPanel.add(titleOptionCheckbox);
+
+        JCheckBox yearOptionCheckbox = new JCheckBox("YEAR");
+        outputPanel.add(yearOptionCheckbox);
+
+        JCheckBox typeOptionCheckbox = new JCheckBox("TYPE");
+        outputPanel.add(typeOptionCheckbox);
+
+        JCheckBox summaryOptionCheckbox = new JCheckBox("SUMMARY");
+        outputPanel.add(summaryOptionCheckbox);
+
+        JLabel sortedBylabel = new JLabel("Sorted by:");
+        outputPanel.add(sortedBylabel);
+        JCheckBox ascOptionCheckbox = new JCheckBox("ASC");
+        outputPanel.add(ascOptionCheckbox);
+        JCheckBox descOptionCheckbox = new JCheckBox("DESC");
+        outputPanel.add(descOptionCheckbox);
+        
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed();
+            }
+        });
+        outputPanel.add(backButton);
+        outputPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        outputPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        menuFrame.add(outputPanel);
+    }
+
+    private static void backButtonActionPerformed() {
+        clearFrame();
+        populateMainMenu();
+    }
 }

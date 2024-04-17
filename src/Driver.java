@@ -65,7 +65,7 @@ public class Driver
         }
     }
 
-    public static void loadSqlFromFile(String filename) 
+    public static boolean loadSqlFromFile(String filename) 
     {
         Path filepath = Paths.get(filename);
 
@@ -85,10 +85,10 @@ public class Driver
                     filepath = Paths.get(filename);
                 }
         }
-        readSqlScript(filename);
+        return readSqlScript(filename);
     }
 
-    public static void readSqlScript(String filename)
+    public static boolean readSqlScript(String filename)
     {
         try {
             FileInputStream inputFileStream = new FileInputStream(filename);
@@ -112,8 +112,11 @@ public class Driver
             }
             reader.close();
             System.out.println("Finished executing all sql statements");
+            
+            return true;
         } catch (FileNotFoundException e) {
             System.out.println(e);
+            return false;
         }
     }
 }
