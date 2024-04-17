@@ -41,23 +41,25 @@ class Main
         System.out.println(inputFilePath);
         //System.out.println(outputFilePath);
 
-        // Load Oracle driver 
-        try {
-            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
-        } catch (Exception e) {
-            System.out.println("Failed to load JDBC/ODBC driver.");
-            return;
-        }
+        
+
+        // Load main menu
+        Menu.createAndShowGUI();
+        Driver.initDriver(inputFilePath);
+
+
+        //Driver.closeConnection();
+
+        /*
 
         Scanner reader = new Scanner(System.in);
-
-                System.out.println();
+        System.out.println();
         System.out.println("Please enter credentials for signing in to Oracle SQL Server.");
 
         //Prompt user for username and password
         String user;
         String password;
-
+        
         System.out.println();
         System.out.print("username: "); 
         user = reader.nextLine();
@@ -108,11 +110,14 @@ class Main
 
             FileInputStream inputFileStream = new FileInputStream(filename);
             reader = new Scanner(inputFileStream);
+            */
+
             /*
             int current = 0;
             int maxCount = 5;
             while (reader.hasNextLine() && current <= maxCount) {
             */
+           /*
             while (reader.hasNextLine()) {
                 try (Statement statement = conn.createStatement()) {
                     String line = reader.nextLine();
@@ -139,6 +144,8 @@ class Main
         } catch (Exception e) {
             System.out.println();
             System.out.println("Could not connect to database with provided credentials");
+            reader.close();
         }
+        */
     }
 }
