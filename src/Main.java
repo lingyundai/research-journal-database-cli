@@ -45,7 +45,7 @@ class Main
         }
 
         String inputFilePath = (cmd != null) ? cmd.getOptionValue("input") : "";
-        System.out.println("Initializing Program with default file: " + inputFilePath);
+        System.out.println("\nInitializing Program with default file: " + inputFilePath);
 
         // Load main menu
         Menu.createAndShowGUI();

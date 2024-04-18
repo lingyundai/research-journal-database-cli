@@ -1,17 +1,43 @@
+/**
+ * File: Menu.java
+ * Authors: Lauren Dennedy G01462079, Lin Dai _________
+ * Class: CS 550 Database Systems
+ * Assignment: Group Project - Project 2
+ * Created: 4/17
+ * Last Modified: 4/18
+ */
+
 import javax.swing.*;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 public class Menu {
 
+    // The main GUI JFrame
     private static JFrame menuFrame;
 
+    // Create a custom exit process so the driver can close if running
+    // and exited using 'X' button.
+    private static WindowListener exitListener = new WindowAdapter() {
+        @Override
+        public void windowClosing(WindowEvent e) {
+            if (Driver.isConnected())
+                Driver.closeConnection();
+            System.exit(0);
+        }
+    };
+
+    // The creation of the main GUI JFrame 
     public static void createAndShowGUI() {
+
         //Create and set up the window.
         menuFrame = new JFrame("Research Journal Database");
-        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menuFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        menuFrame.addWindowListener(Menu.exitListener);
         menuFrame.setPreferredSize(new Dimension(640, 480));
 
         // Use the populateSetup function to add components

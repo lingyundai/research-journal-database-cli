@@ -1,3 +1,12 @@
+/**
+ * File: Driver.java
+ * Authors: Lauren Dennedy G01462079, Lin Dai _________
+ * Class: CS 550 Database Systems
+ * Assignment: Group Project - Project 2
+ * Created: 4/17
+ * Last Modified: 4/18
+ */
+
 import java.sql.*;
 import oracle.jdbc.driver.*;
 import java.io.FileInputStream;
@@ -22,6 +31,7 @@ public class Driver
         }
     }
 
+    // Overloaded method receiving a default filepath
     public static void initDriver(String fp) 
     {
         // Load Oracle driver 
@@ -49,7 +59,9 @@ public class Driver
     public static void closeConnection()
     {
         try {
+            System.out.println("\nClosing SQL Database connection...");
             conn.close();
+            System.out.println("\nSQL Database connection successfully closed.");
         } catch (SQLException sqle) {
             System.out.println("SQL Database connection failed to close.");
         }
@@ -59,10 +71,14 @@ public class Driver
     public static boolean isConnected()
     {
         try {
-            return !conn.isClosed();
+            if (conn != null) {
+                return !conn.isClosed();
+            }
         } catch (SQLException sqle) {
             return false;
         }
+
+        return false;
     }
 
     public static boolean loadSqlFromFile(String filename) 
