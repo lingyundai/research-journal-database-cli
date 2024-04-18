@@ -7,12 +7,7 @@
  * Last Modified: 4/18
  */
 
-import java.sql.*; 
-import java.math.*; 
-import java.io.*;
-import java.nio.file.*;
-import java.util.Scanner;
-import oracle.jdbc.driver.*;
+import java.sql.*;
 import org.apache.commons.cli.*;
 
 class Main

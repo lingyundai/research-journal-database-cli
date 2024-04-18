@@ -1,11 +1,3 @@
-import java.awt.Component;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 /**
  * File: PublicationsIDSearchView.java
  * Authors: Lauren Dennedy G01462079, Lin Dai _________
@@ -14,6 +6,14 @@ import javax.swing.JTextField;
  * Created: 4/18
  * Last Modified: 4/18
  */
+
+import java.awt.Component;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 class PublicationsIDSearchView
 {

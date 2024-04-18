@@ -28,7 +28,7 @@ public class Driver
     {
         // Load Oracle driver 
         try {
-            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
+            DriverManager.registerDriver(new OracleDriver());
         } catch (Exception e) {
             System.out.println("Failed to load JDBC/ODBC driver.");
             return;
@@ -40,7 +40,7 @@ public class Driver
     {
         // Load Oracle driver 
         try {
-            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
+            DriverManager.registerDriver(new OracleDriver());
             defaultFilePath = fp;
         } catch (Exception e) {
             System.out.println("Failed to load JDBC/ODBC driver.");
