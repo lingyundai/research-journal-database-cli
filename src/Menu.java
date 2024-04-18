@@ -14,6 +14,7 @@ import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 
 public class Menu {
 
@@ -103,7 +104,7 @@ public class Menu {
         JPanel sqlFilePanel = new JPanel();
         sqlFilePanel.setLayout(new BoxLayout(sqlFilePanel, BoxLayout.Y_AXIS));
 
-        JLabel label = new JLabel("Please enter directory for the .sql file you would like to load.");
+        JLabel label = new JLabel("Please enter the directory for the .sql file you would like to load.");
         sqlFilePanel.add(label);
 
         JLabel sqlFileLabel = new javax.swing.JLabel("SQL File:");
@@ -199,13 +200,13 @@ public class Menu {
         JLabel label = new JLabel("Select Tables to View:");
         contentsOptionPanel.add(label);
 
-        JLabel publicationsOptionLabel = new JLabel("PUBLICATIONS");
+        JLabel publicationsOptionLabel = new JLabel("PUBLICATIONS:");
         contentsOptionPanel.add(publicationsOptionLabel);
         
         JCheckBox publicationsOptionCheckBox = new JCheckBox();
         contentsOptionPanel.add(publicationsOptionCheckBox);
 
-        JLabel authorsOptionLabel = new JLabel("AUTHORS");
+        JLabel authorsOptionLabel = new JLabel("AUTHORS:");
         contentsOptionPanel.add(authorsOptionLabel);
         
         JCheckBox authorsOptionCheckBox = new JCheckBox();
@@ -214,7 +215,7 @@ public class Menu {
         JButton enterTableOptionsButton = new JButton("Enter");
         enterTableOptionsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                return;
+                enterTableOptionsActionPerformed(publicationsOptionCheckBox.isSelected(), authorsOptionCheckBox.isSelected());
             }
         });
         contentsOptionPanel.add(enterTableOptionsButton);
@@ -229,6 +230,76 @@ public class Menu {
         contentsOptionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         contentsOptionPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
         menuFrame.add(contentsOptionPanel);
+    }
+
+    private static void enterTableOptionsActionPerformed(boolean viewPublications, boolean viewAuthors)
+    {
+        populateResultingTablesPanel(viewPublications, viewAuthors);
+    }
+
+    private static void populateResultingTablesPanel(boolean viewPublications, boolean viewAuthors)
+    {
+        String[][] publicationData = {{""}};
+        if (viewPublications) {
+            ArrayList<ArrayList<String>> publicationsData = Driver.getPublicationsData();
+            publicationData = new String[publicationsData.size()][publicationsData.get(0).size()];
+            for (int i = 0; i < publicationsData.size(); i++) {
+                for (int j = 0; j < publicationsData.get(i).size(); j++) {
+                    publicationData[i][j] = publicationsData.get(i).get(j);
+                }
+            }
+        }
+
+        String[][] authorData = {{""}};
+        if (viewAuthors) {
+            ArrayList<ArrayList<String>> authorsData = Driver.getAuthorsData();
+            authorData = new String[authorsData.size()][authorsData.get(0).size()];
+            for (int i = 0; i < authorsData.size(); i++) {
+                for (int j = 0; j < authorsData.get(i).size(); j++) {
+                    authorData[i][j] = authorsData.get(i).get(j);
+                }
+            }
+        }
+
+        clearFrame();
+        JPanel resultingTablesPanel = new JPanel();
+        resultingTablesPanel.setLayout(new BoxLayout(resultingTablesPanel, BoxLayout.Y_AXIS));
+
+        if (viewPublications && viewAuthors)
+        {
+            JSplitPane bothTables = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+
+            String[] publicationsColumns = {"Publication ID", "Year", "Type", "Title", "Summary"};
+            JTable publicationsTable = new JTable(publicationData, publicationsColumns);
+            publicationsTable.setFillsViewportHeight(true);
+            JScrollPane publicationsPane = new JScrollPane(publicationsTable);
+
+            String[] authorsColumns = {"Publication ID", "Name"};
+            JTable authorsTable = new JTable(authorData, authorsColumns);
+            authorsTable.setFillsViewportHeight(true);
+            JScrollPane authorsPane = new JScrollPane(authorsTable);
+
+            bothTables.add(publicationsPane);
+            bothTables.add(authorsPane);
+            bothTables.setDividerLocation(1.0);
+            resultingTablesPanel.add(bothTables);
+        }
+        else
+        {
+            // TODO: One or the other
+            return;
+        }
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed();
+            }
+        });
+        resultingTablesPanel.add(backButton);
+        menuFrame.add(resultingTablesPanel);
+        return;
+
     }
 
     private static void populatePublicationIdPanel()
@@ -253,7 +324,7 @@ public class Menu {
         menuFrame.add(publicationOptionPanel);
     }
 
-        private static void populateAttributePanel() 
+    private static void populateAttributePanel() 
     {
         JPanel attributePanel = new JPanel();
         attributePanel.setLayout(new BoxLayout(attributePanel, BoxLayout.Y_AXIS));

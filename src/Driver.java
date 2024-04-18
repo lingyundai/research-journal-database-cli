@@ -12,6 +12,7 @@ import oracle.jdbc.driver.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.file.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Driver
@@ -19,6 +20,9 @@ public class Driver
     private static Connection conn;
 
     private static String defaultFilePath;
+
+    private static String GET_PUBLICATIONS_TABLE_QUERY = "SELECT * FROM PUBLICATIONS";
+    private static String GET_AUTHORS_TABLE_QUERY = "SELECT * FROM AUTHORS";
 
     public static void initDriver()
     {
@@ -65,7 +69,6 @@ public class Driver
         } catch (SQLException sqle) {
             System.out.println("SQL Database connection failed to close.");
         }
-        
     }
 
     public static boolean isConnected()
@@ -134,5 +137,93 @@ public class Driver
             System.out.println(e);
             return false;
         }
+    }
+
+    private static ResultSet getPublicationsTable()
+    {
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet result = statement.executeQuery(GET_PUBLICATIONS_TABLE_QUERY);
+            return result;
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+        return null;
+    }
+
+    public static ArrayList<ArrayList<String>> getPublicationsData()
+    {
+        ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
+
+        ResultSet publicationsResult = Driver.getPublicationsTable();
+
+        try {
+            if (publicationsResult != null) {
+                System.out.println("\nGetting Publications Table Data...");
+                while (publicationsResult.next()) {
+                    String pubID = publicationsResult.getString("PUBLICATIONID");
+                    String year = publicationsResult.getString("YEAR");
+                    String type = publicationsResult.getString("TYPE");
+                    String title = publicationsResult.getString("TITLE");
+                    String summary = publicationsResult.getString("SUMMARY");
+    
+                    ArrayList<String> row = new ArrayList<>();
+                    row.add(pubID);
+                    row.add(year);
+                    row.add(type);
+                    row.add(title);
+                    row.add(summary);
+
+                    publicationsData.add(row);
+                }
+                publicationsResult.getStatement().close();
+                System.out.println("\nPublications Table Data Retrieval Complete!");
+            }
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+
+        return publicationsData;
+    }
+
+    private static ResultSet getAuthorsTable()
+    {
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet result = statement.executeQuery(GET_AUTHORS_TABLE_QUERY);
+            return result;
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+        return null;
+    }
+
+    public static ArrayList<ArrayList<String>> getAuthorsData()
+    {
+        ArrayList<ArrayList<String>> authorsData = new ArrayList<ArrayList<String>>();
+
+        ResultSet authorsResult = Driver.getAuthorsTable();
+
+        try {
+            if (authorsResult != null) {
+                System.out.println("\nGetting Authors Table Data...");
+                while (authorsResult.next()) {
+                    String pubID = authorsResult.getString("PUBLICATIONID");
+                    String author = authorsResult.getString("AUTHOR");
+    
+                    ArrayList<String> row = new ArrayList<>();
+                    row.add(pubID);
+                    row.add(author);
+
+                    authorsData.add(row);
+                }
+                authorsResult.getStatement().close();
+                System.out.println("\nAuthors Table Data Retrieval Complete!");
+            }
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+
+        return authorsData;
     }
 }
