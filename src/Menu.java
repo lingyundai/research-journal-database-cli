@@ -215,7 +215,11 @@ public class Menu {
         JButton enterTableOptionsButton = new JButton("Enter");
         enterTableOptionsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enterTableOptionsActionPerformed(publicationsOptionCheckBox.isSelected(), authorsOptionCheckBox.isSelected());
+                if (publicationsOptionCheckBox.isSelected() || authorsOptionCheckBox.isSelected()) {
+                    enterTableOptionsActionPerformed(publicationsOptionCheckBox.isSelected(), authorsOptionCheckBox.isSelected());
+                } else {
+                    System.out.println("\nUser must select either publications or authors to view.");
+                }
             }
         });
         contentsOptionPanel.add(enterTableOptionsButton);
@@ -286,8 +290,21 @@ public class Menu {
         }
         else
         {
-            // TODO: One or the other
-            return;
+            // One or the other
+            if (viewPublications) {
+                String[] publicationsColumns = {"Publication ID", "Year", "Type", "Title", "Summary"};
+                JTable publicationsTable = new JTable(publicationData, publicationsColumns);
+                publicationsTable.setFillsViewportHeight(true);
+                JScrollPane publicationsPane = new JScrollPane(publicationsTable);
+                resultingTablesPanel.add(publicationsPane);
+
+            } else if (viewAuthors) {
+                String[] authorsColumns = {"Publication ID", "Name"};
+                JTable authorsTable = new JTable(authorData, authorsColumns);
+                authorsTable.setFillsViewportHeight(true);
+                JScrollPane authorsPane = new JScrollPane(authorsTable);
+                resultingTablesPanel.add(authorsPane);
+            }
         }
 
         JButton backButton = new JButton("Back");
@@ -299,7 +316,6 @@ public class Menu {
         resultingTablesPanel.add(backButton);
         menuFrame.add(resultingTablesPanel);
         return;
-
     }
 
     private static void populatePublicationIdPanel()
