@@ -9,12 +9,10 @@
 
 import javax.swing.*;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.ArrayList;
 
 public class Menu {
 
@@ -48,6 +46,18 @@ public class Menu {
         menuFrame.pack();
         menuFrame.setVisible(true);
     }
+
+    public static JFrame getMenuFrame() { return menuFrame; }
+
+    public static void clearFrame()
+    {
+        menuFrame.getContentPane().removeAll();
+        menuFrame.pack();
+        refreshFrame();
+        menuFrame.setPreferredSize(new Dimension(640, 480));
+    }
+
+    private static void refreshFrame() { SwingUtilities.updateComponentTreeUI(menuFrame); }
 
     private static void populateSetup()
     {
@@ -88,16 +98,6 @@ public class Menu {
             return;
         }
     }
-
-    private static void clearFrame()
-    {
-        menuFrame.getContentPane().removeAll();
-        menuFrame.pack();
-        refreshFrame();
-        menuFrame.setPreferredSize(new Dimension(640, 480));
-    }
-
-    private static void refreshFrame() { SwingUtilities.updateComponentTreeUI(menuFrame); }
 
     private static void populateSQLFileMenu()
     {
@@ -178,255 +178,23 @@ public class Menu {
         menuFrame.add(menuPanel);
     }
 
+    public static void backButtonActionPerformed() {
+        clearFrame();
+        populateMainMenu();
+    }
+
     private static void tableContentsButtonActionPerformed(java.awt.event.ActionEvent evt) {
         clearFrame();
-        populateTableOptionsPanel();
+        TableContentsView.populateTableOptionsPanel();
     }
 
     private static void publicationIdButtonActionPerformed(java.awt.event.ActionEvent evt) {
         clearFrame();
-        populatePublicationIdPanel();
+        PublicationsIDSearchView.populatePublicationIdPanel();
     }
     
     private static void attributeButtonActionPerformed(java.awt.event.ActionEvent evt) {
         clearFrame();
-        populateAttributePanel();
-    }
-
-    private static void populateTableOptionsPanel()
-    {
-        JPanel contentsOptionPanel = new JPanel();
-
-        JLabel label = new JLabel("Select Tables to View:");
-        contentsOptionPanel.add(label);
-
-        JLabel publicationsOptionLabel = new JLabel("PUBLICATIONS:");
-        contentsOptionPanel.add(publicationsOptionLabel);
-        
-        JCheckBox publicationsOptionCheckBox = new JCheckBox();
-        contentsOptionPanel.add(publicationsOptionCheckBox);
-
-        JLabel authorsOptionLabel = new JLabel("AUTHORS:");
-        contentsOptionPanel.add(authorsOptionLabel);
-        
-        JCheckBox authorsOptionCheckBox = new JCheckBox();
-        contentsOptionPanel.add(authorsOptionCheckBox);
-        
-        JButton enterTableOptionsButton = new JButton("Enter");
-        enterTableOptionsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                if (publicationsOptionCheckBox.isSelected() || authorsOptionCheckBox.isSelected()) {
-                    enterTableOptionsActionPerformed(publicationsOptionCheckBox.isSelected(), authorsOptionCheckBox.isSelected());
-                } else {
-                    System.out.println("\nUser must select either publications or authors to view.");
-                }
-            }
-        });
-        contentsOptionPanel.add(enterTableOptionsButton);
-
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed();
-            }
-        });
-        contentsOptionPanel.add(backButton);
-        contentsOptionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        contentsOptionPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
-        menuFrame.add(contentsOptionPanel);
-    }
-
-    private static void enterTableOptionsActionPerformed(boolean viewPublications, boolean viewAuthors)
-    {
-        populateResultingTablesPanel(viewPublications, viewAuthors);
-    }
-
-    private static void populateResultingTablesPanel(boolean viewPublications, boolean viewAuthors)
-    {
-        String[][] publicationData = {{""}};
-        if (viewPublications) {
-            ArrayList<ArrayList<String>> publicationsData = Driver.getPublicationsData();
-            publicationData = new String[publicationsData.size()][publicationsData.get(0).size()];
-            for (int i = 0; i < publicationsData.size(); i++) {
-                for (int j = 0; j < publicationsData.get(i).size(); j++) {
-                    publicationData[i][j] = publicationsData.get(i).get(j);
-                }
-            }
-        }
-
-        String[][] authorData = {{""}};
-        if (viewAuthors) {
-            ArrayList<ArrayList<String>> authorsData = Driver.getAuthorsData();
-            authorData = new String[authorsData.size()][authorsData.get(0).size()];
-            for (int i = 0; i < authorsData.size(); i++) {
-                for (int j = 0; j < authorsData.get(i).size(); j++) {
-                    authorData[i][j] = authorsData.get(i).get(j);
-                }
-            }
-        }
-
-        clearFrame();
-        JPanel resultingTablesPanel = new JPanel();
-        resultingTablesPanel.setLayout(new BoxLayout(resultingTablesPanel, BoxLayout.Y_AXIS));
-
-        if (viewPublications && viewAuthors)
-        {
-            JSplitPane bothTables = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-
-            String[] publicationsColumns = {"Publication ID", "Year", "Type", "Title", "Summary"};
-            JTable publicationsTable = new JTable(publicationData, publicationsColumns);
-            publicationsTable.setFillsViewportHeight(true);
-            JScrollPane publicationsPane = new JScrollPane(publicationsTable);
-
-            String[] authorsColumns = {"Publication ID", "Name"};
-            JTable authorsTable = new JTable(authorData, authorsColumns);
-            authorsTable.setFillsViewportHeight(true);
-            JScrollPane authorsPane = new JScrollPane(authorsTable);
-
-            bothTables.add(publicationsPane);
-            bothTables.add(authorsPane);
-            bothTables.setDividerLocation(1.0);
-            resultingTablesPanel.add(bothTables);
-        }
-        else
-        {
-            // One or the other
-            if (viewPublications) {
-                String[] publicationsColumns = {"Publication ID", "Year", "Type", "Title", "Summary"};
-                JTable publicationsTable = new JTable(publicationData, publicationsColumns);
-                publicationsTable.setFillsViewportHeight(true);
-                JScrollPane publicationsPane = new JScrollPane(publicationsTable);
-                resultingTablesPanel.add(publicationsPane);
-
-            } else if (viewAuthors) {
-                String[] authorsColumns = {"Publication ID", "Name"};
-                JTable authorsTable = new JTable(authorData, authorsColumns);
-                authorsTable.setFillsViewportHeight(true);
-                JScrollPane authorsPane = new JScrollPane(authorsTable);
-                resultingTablesPanel.add(authorsPane);
-            }
-        }
-
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed();
-            }
-        });
-        resultingTablesPanel.add(backButton);
-        menuFrame.add(resultingTablesPanel);
-        return;
-    }
-
-    private static void populatePublicationIdPanel()
-    {
-        JPanel publicationOptionPanel = new JPanel();
-        publicationOptionPanel.setLayout(new BoxLayout(publicationOptionPanel, BoxLayout.Y_AXIS));
-        JLabel label = new JLabel("Enter a Publication ID to search for:");
-        publicationOptionPanel.add(label);
-
-        JTextField publicationIDField = new javax.swing.JTextField();
-        publicationOptionPanel.add(publicationIDField);
-
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed();
-            }
-        });
-        publicationOptionPanel.add(backButton);
-        publicationOptionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        publicationOptionPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
-        menuFrame.add(publicationOptionPanel);
-    }
-
-    private static void populateAttributePanel() 
-    {
-        JPanel attributePanel = new JPanel();
-        attributePanel.setLayout(new BoxLayout(attributePanel, BoxLayout.Y_AXIS));
-
-        JLabel label = new JLabel("Input fields:");
-        attributePanel.add(label);
-
-        JLabel authorInputLabel = new javax.swing.JLabel("AUTHOR:");
-        JTextField authorTextField = new javax.swing.JTextField();
-        attributePanel.add(authorInputLabel);
-        attributePanel.add(authorTextField);
-
-        JLabel titleInputLabel = new javax.swing.JLabel("TITLE:");
-        JTextField titleTextField = new javax.swing.JTextField();
-        attributePanel.add(titleInputLabel);
-        attributePanel.add(titleTextField);
-
-        JLabel yearInputLabel = new javax.swing.JLabel("YEAR:");
-        JTextField yearTextField = new javax.swing.JTextField();
-        attributePanel.add(yearInputLabel);
-        attributePanel.add(yearTextField);
-
-        JLabel typeInputLabel = new javax.swing.JLabel("TYPE:");
-        JTextField typeTextField = new javax.swing.JTextField();
-        attributePanel.add(typeInputLabel);
-        attributePanel.add(typeTextField);
-
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed();
-            }
-        });
-        attributePanel.add(backButton);
-        attributePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        attributePanel.setAlignmentY(Component.CENTER_ALIGNMENT);
-        menuFrame.add(attributePanel);
-    }
-
-    private static void populateOutputFieldPanel() 
-    {
-        JPanel outputPanel = new JPanel();
-        outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
-
-        JLabel label = new JLabel("Output fields:");
-        outputPanel.add(label);
-
-        JCheckBox publicationIdOptionCheckbox = new JCheckBox("PUBLICATIONID");
-        outputPanel.add(publicationIdOptionCheckbox);
-
-        JCheckBox authorOptionCheckbox = new JCheckBox("AUTHOR");
-        outputPanel.add(authorOptionCheckbox);
-
-        JCheckBox titleOptionCheckbox = new JCheckBox("TITLE");
-        outputPanel.add(titleOptionCheckbox);
-
-        JCheckBox yearOptionCheckbox = new JCheckBox("YEAR");
-        outputPanel.add(yearOptionCheckbox);
-
-        JCheckBox typeOptionCheckbox = new JCheckBox("TYPE");
-        outputPanel.add(typeOptionCheckbox);
-
-        JCheckBox summaryOptionCheckbox = new JCheckBox("SUMMARY");
-        outputPanel.add(summaryOptionCheckbox);
-
-        JLabel sortedBylabel = new JLabel("Sorted by:");
-        outputPanel.add(sortedBylabel);
-        JCheckBox ascOptionCheckbox = new JCheckBox("ASC");
-        outputPanel.add(ascOptionCheckbox);
-        JCheckBox descOptionCheckbox = new JCheckBox("DESC");
-        outputPanel.add(descOptionCheckbox);
-        
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed();
-            }
-        });
-        outputPanel.add(backButton);
-        outputPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        outputPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
-        menuFrame.add(outputPanel);
-    }
-
-    private static void backButtonActionPerformed() {
-        clearFrame();
-        populateMainMenu();
+        PublicationsAttrSearchView.populateAttributePanel();
     }
 }
