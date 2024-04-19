@@ -47,12 +47,14 @@ public class PublicationsAttrSearchView
         attributePanel.add(typeTextField);
 
         JButton backButton = new JButton("Back");
+        JButton enterAttributeButton = new JButton("Enter");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Menu.backButtonActionPerformed();
             }
         });
         attributePanel.add(backButton);
+        attributePanel.add(enterAttributeButton);
         attributePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         attributePanel.setAlignmentY(Component.CENTER_ALIGNMENT);
         Menu.getMenuFrame().add(attributePanel);

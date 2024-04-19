@@ -21,8 +21,8 @@ public class Driver
 
     private static String defaultFilePath;
 
-    private static String GET_PUBLICATIONS_TABLE_QUERY = "SELECT * FROM PUBLICATIONS";
-    private static String GET_AUTHORS_TABLE_QUERY = "SELECT * FROM AUTHORS";
+    private static final String GET_PUBLICATIONS_TABLE_QUERY = "SELECT * FROM PUBLICATIONS";
+    private static final String GET_AUTHORS_TABLE_QUERY = "SELECT * FROM AUTHORS";
 
     public static void initDriver()
     {
@@ -139,6 +139,21 @@ public class Driver
         }
     }
 
+    private static ResultSet getPublicationIdTuple(String publicationId)
+    {
+        String publicationIdQuery = "SELECT * FROM PUBLICATIONS WHERE PUBLICATIONID = " + publicationId;
+        
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet result = statement.executeQuery(publicationIdQuery);
+            System.out.println(result);
+            return result;
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+        return null;
+    }
+
     private static ResultSet getPublicationsTable()
     {
         try {
@@ -225,5 +240,40 @@ public class Driver
         }
 
         return authorsData;
+    }
+
+    public static ArrayList<ArrayList<String>> getPublicationIdTupleData(String publicationId)
+    {
+        ArrayList<ArrayList<String>> publicationsIdTupleData = new ArrayList<ArrayList<String>>();
+
+        ResultSet publicationIdTupleResult = Driver.getPublicationIdTuple(publicationId);
+
+        try {
+            if (publicationIdTupleResult != null) {
+                System.out.println("\nGetting Publication ID Data...");
+                while (publicationIdTupleResult.next()) {
+                    String pubID = publicationIdTupleResult.getString("PUBLICATIONID");
+                    String year = publicationIdTupleResult.getString("YEAR");
+                    String type = publicationIdTupleResult.getString("TYPE");
+                    String title = publicationIdTupleResult.getString("TITLE");
+                    String summary = publicationIdTupleResult.getString("SUMMARY");
+    
+                    ArrayList<String> row = new ArrayList<>();
+                    row.add(pubID);
+                    row.add(year);
+                    row.add(type);
+                    row.add(title);
+                    row.add(summary);
+
+                    publicationsIdTupleData.add(row);
+                }
+                publicationIdTupleResult.getStatement().close();
+                System.out.println("\nPublication ID Data Retrieval Complete!");
+            }
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+
+        return publicationsIdTupleData;
     }
 }
