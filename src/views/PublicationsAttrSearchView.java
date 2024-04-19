@@ -122,7 +122,7 @@ public class PublicationsAttrSearchView
 
         JLabel sortedBylabel = new JLabel("Sorted by:");
         outputPanel.add(sortedBylabel);
-        String[] options = {"PUBLICATIONID", "AUTHOR", "TITLE", "YEAR", "TYPE", "SUMMARY"};
+        String[] options = {"p.PUBLICATIONID", "a.AUTHOR", "p.TITLE", "p.YEAR", "p.TYPE", "p.SUMMARY"};
         JComboBox<String> sortOptionComboBox = new JComboBox<String>(options);
         outputPanel.add(sortOptionComboBox);
 
@@ -318,7 +318,7 @@ public class PublicationsAttrSearchView
         {
             JPanel resultingTablesPanel = setUpFilteredOutputPanel();
 
-            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAuthorData(author);
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAuthorData(author, sortOption);
 
             handleResultPanel(author, title, year, type, displayPublicationId,
                             displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
@@ -328,7 +328,7 @@ public class PublicationsAttrSearchView
         {
             JPanel resultingTablesPanel = setUpFilteredOutputPanel();
 
-            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAllInputData(author, title, year, type);
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAllInputData(author, title, year, type, sortOption);
 
             handleResultPanel(author, title, year, type, displayPublicationId,
                             displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
@@ -338,7 +338,7 @@ public class PublicationsAttrSearchView
         {
             JPanel resultingTablesPanel = setUpFilteredOutputPanel();
 
-            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAuthorYearTypeData(author, year, type);
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAuthorYearTypeData(author, year, type, sortOption);
 
             handleResultPanel(author, title, year, type, displayPublicationId,
                             displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
@@ -348,7 +348,7 @@ public class PublicationsAttrSearchView
         {
             JPanel resultingTablesPanel = setUpFilteredOutputPanel();
 
-            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromYearTypeData(year, type);
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromYearTypeData(year, type, sortOption);
 
             handleResultPanel(author, title, year, type, displayPublicationId,
                             displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
@@ -358,7 +358,7 @@ public class PublicationsAttrSearchView
         {
             JPanel resultingTablesPanel = setUpFilteredOutputPanel();
 
-            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromYearAuthorData(year, author);
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromYearAuthorData(year, author, sortOption);
 
             handleResultPanel(author, title, year, type, displayPublicationId,
                             displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
@@ -368,7 +368,7 @@ public class PublicationsAttrSearchView
         {
             JPanel resultingTablesPanel = setUpFilteredOutputPanel();
 
-            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromYearTitleData(year, title);
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromYearTitleData(year, title, sortOption);
 
             handleResultPanel(author, title, year, type, displayPublicationId,
                             displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
@@ -378,7 +378,7 @@ public class PublicationsAttrSearchView
         {
             JPanel resultingTablesPanel = setUpFilteredOutputPanel();
 
-            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAuthorTitleData(author, title);
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAuthorTitleData(author, title, sortOption);
             
             handleResultPanel(author, title, year, type, displayPublicationId,
                             displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
@@ -388,7 +388,7 @@ public class PublicationsAttrSearchView
         {
             JPanel resultingTablesPanel = setUpFilteredOutputPanel();
 
-            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromTypeData(type);
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromTypeData(type, sortOption);
             
             handleResultPanel(author, title, year, type, displayPublicationId,
                             displayTitle, displayYear, displayType, displaySummary, displayAuthor, 

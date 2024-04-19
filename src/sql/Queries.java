@@ -208,11 +208,13 @@ public class Queries {
         return publicationsData;
     }
 
-    private static ResultSet getPublicationsFromYearAuthor(String year, String author) 
+    private static ResultSet getPublicationsFromYearAuthor(String year, String author, String sortBy) 
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_YEAR_AUTHOR_QUERY, year, author));
+            String prior = String.format(Statements.GET_PUBLICATIONS_FROM_YEAR_AUTHOR_QUERY, year, author);
+            String query = String.format(prior + Statements.ORDER_BY, sortBy);
+            ResultSet result = statement.executeQuery(query);
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -220,9 +222,9 @@ public class Queries {
         return null;
     }
 
-    public static ArrayList<ArrayList<String>> getPublicationsFromYearAuthorData(String year, String author) 
+    public static ArrayList<ArrayList<String>> getPublicationsFromYearAuthorData(String year, String author, String sortBy) 
     {
-        ResultSet publicationsResult = getPublicationsFromYearAuthor(year, author);
+        ResultSet publicationsResult = getPublicationsFromYearAuthor(year, author, sortBy);
         ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
         try {
             publicationsData = getPublicationDataFromQuery(publicationsResult);
@@ -235,11 +237,13 @@ public class Queries {
         return publicationsData;
     }
 
-    private static ResultSet getPublicationsFromYearType(String year, String type) 
+    private static ResultSet getPublicationsFromYearType(String year, String type, String sortBy) 
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_YEAR_TYPE_QUERY, year, type));
+            String prior = String.format(Statements.GET_PUBLICATIONS_FROM_YEAR_TYPE_QUERY, year, type);
+            String query = String.format(prior + Statements.ORDER_BY, sortBy);
+            ResultSet result = statement.executeQuery(query);
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -247,11 +251,11 @@ public class Queries {
         return null;
     }
 
-    public static ArrayList<ArrayList<String>> getPublicationsFromYearTypeData(String year, String type) 
+    public static ArrayList<ArrayList<String>> getPublicationsFromYearTypeData(String year, String type, String sortBy) 
     {
         ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
 
-        ResultSet publicationsResult = getPublicationsFromYearType(year, type);
+        ResultSet publicationsResult = getPublicationsFromYearType(year, type, sortBy);
         try {
             publicationsData = getPublicationDataFromQuery(publicationsResult);
             publicationsResult.getStatement().close();
@@ -263,12 +267,13 @@ public class Queries {
         return publicationsData;
     }
 
-    private static ResultSet getPublicationsFromAuthorYearType(String author, String year, String type)
+    private static ResultSet getPublicationsFromAuthorYearType(String author, String year, String type, String sortBy)
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_ALL_AUTHOR_YEAR_TYPE_QUERY,
-                author, year, type));
+            String prior = String.format(Statements.GET_PUBLICATIONS_FROM_ALL_AUTHOR_YEAR_TYPE_QUERY, author, year, type);
+            String query = String.format(prior + Statements.ORDER_BY, sortBy);
+            ResultSet result = statement.executeQuery(query);
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -276,11 +281,11 @@ public class Queries {
         return null;
     }
 
-    public static ArrayList<ArrayList<String>> getPublicationsFromAuthorYearTypeData(String author, String year, String type) 
+    public static ArrayList<ArrayList<String>> getPublicationsFromAuthorYearTypeData(String author, String year, String type, String sortBy) 
     {
         ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
 
-        ResultSet publicationsResult = getPublicationsFromAuthorYearType(author, year, type);
+        ResultSet publicationsResult = getPublicationsFromAuthorYearType(author, year, type, sortBy);
         try {
             publicationsData = getPublicationDataFromQuery(publicationsResult);
             publicationsResult.getStatement().close();
@@ -292,12 +297,13 @@ public class Queries {
         return publicationsData;
     }
     
-    private static ResultSet getPublicationsFromAllInputs(String author, String title, String year, String type)
+    private static ResultSet getPublicationsFromAllInputs(String author, String title, String year, String type, String sortBy)
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_ALL_INPUTS_QUERY,
-                author, title, year, type));
+            String prior = String.format(Statements.GET_PUBLICATIONS_FROM_ALL_INPUTS_QUERY, author, title, year, type);
+            String query = String.format(prior + Statements.ORDER_BY, sortBy);
+            ResultSet result = statement.executeQuery(query);
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -305,11 +311,11 @@ public class Queries {
         return null;
     }
 
-    public static ArrayList<ArrayList<String>> getPublicationsFromAllInputData(String author, String title, String year, String type) 
+    public static ArrayList<ArrayList<String>> getPublicationsFromAllInputData(String author, String title, String year, String type, String sortBy) 
     {
         ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
 
-        ResultSet publicationsResult = getPublicationsFromAllInputs(author, title, year, type);
+        ResultSet publicationsResult = getPublicationsFromAllInputs(author, title, year, type, sortBy);
         try {
             publicationsData = getPublicationDataFromQuery(publicationsResult);
             publicationsResult.getStatement().close();
@@ -321,11 +327,13 @@ public class Queries {
         return publicationsData;
     }
 
-    private static ResultSet getPublicationsFromAuthor(String author)
+    private static ResultSet getPublicationsFromAuthor(String author, String sortBy)
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_AUTHOR_QUERY, author));
+            String prior = String.format(Statements.GET_PUBLICATIONS_FROM_AUTHOR_QUERY, author);
+            String query = String.format(prior + Statements.ORDER_BY, sortBy);
+            ResultSet result = statement.executeQuery(query);
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -333,10 +341,10 @@ public class Queries {
         return null;
     }
 
-    public static ArrayList<ArrayList<String>> getPublicationsFromAuthorData(String author)
+    public static ArrayList<ArrayList<String>> getPublicationsFromAuthorData(String author, String sortBy)
     {
         ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
-        ResultSet publicationsResult = getPublicationsFromAuthor(author);
+        ResultSet publicationsResult = getPublicationsFromAuthor(author, sortBy);
 
         try {
             publicationsData = getPublicationDataFromQuery(publicationsResult);
@@ -349,11 +357,13 @@ public class Queries {
         return publicationsData;
     }
 
-    private static ResultSet getPublicationsFromYearTitle(String year, String title)
+    private static ResultSet getPublicationsFromYearTitle(String year, String title, String sortBy)
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_YEAR_TITLE_QUERY, year, title));
+            String prior = String.format(Statements.GET_PUBLICATIONS_FROM_YEAR_TITLE_QUERY, year, title);
+            String query = String.format(prior + Statements.ORDER_BY, sortBy);
+            ResultSet result = statement.executeQuery(query);
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -361,10 +371,10 @@ public class Queries {
         return null;
     }
 
-    public static ArrayList<ArrayList<String>> getPublicationsFromYearTitleData(String year, String title)
+    public static ArrayList<ArrayList<String>> getPublicationsFromYearTitleData(String year, String title, String sortBy)
     {
         ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
-        ResultSet publicationsResult = getPublicationsFromYearTitle(year, title);
+        ResultSet publicationsResult = getPublicationsFromYearTitle(year, title, sortBy);
 
         try {
             publicationsData = getPublicationDataFromQuery(publicationsResult);
@@ -377,11 +387,13 @@ public class Queries {
         return publicationsData;
     }
 
-    private static ResultSet getPublicationsFromAuthorTitle(String author, String title)
+    private static ResultSet getPublicationsFromAuthorTitle(String author, String title, String sortBy)
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_AUTHOR_TITLE_QUERY, author, title));
+            String prior = String.format(Statements.GET_PUBLICATIONS_FROM_AUTHOR_TITLE_QUERY, author, title);
+            String query = String.format(prior + Statements.ORDER_BY, sortBy);
+            ResultSet result = statement.executeQuery(query);
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -389,10 +401,10 @@ public class Queries {
         return null;
     }
 
-    public static ArrayList<ArrayList<String>> getPublicationsFromAuthorTitleData(String author, String title)
+    public static ArrayList<ArrayList<String>> getPublicationsFromAuthorTitleData(String author, String title, String sortBy)
     {
         ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
-        ResultSet publicationsResult = getPublicationsFromAuthorTitle(author, title);
+        ResultSet publicationsResult = getPublicationsFromAuthorTitle(author, title, sortBy);
 
         try {
             publicationsData = getPublicationDataFromQuery(publicationsResult);
@@ -405,11 +417,13 @@ public class Queries {
         return publicationsData;
     }
 
-    private static ResultSet getPublicationsFromType(String type)
+    private static ResultSet getPublicationsFromType(String type, String sortBy)
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_TYPE_QUERY, type));
+            String prior = String.format(Statements.GET_PUBLICATIONS_FROM_TYPE_QUERY, type);
+            String query = String.format(prior + Statements.ORDER_BY, sortBy);
+            ResultSet result = statement.executeQuery(query);
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -417,10 +431,10 @@ public class Queries {
         return null;
     }
 
-    public static ArrayList<ArrayList<String>> getPublicationsFromTypeData(String type)
+    public static ArrayList<ArrayList<String>> getPublicationsFromTypeData(String type, String sortBy)
     {
         ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
-        ResultSet publicationsResult = getPublicationsFromType(type);
+        ResultSet publicationsResult = getPublicationsFromType(type, sortBy);
 
         try {
             publicationsData = getPublicationDataFromQuery(publicationsResult);
