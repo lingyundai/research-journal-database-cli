@@ -68,9 +68,8 @@ public class PublicationsIDSearchView
     {
         String[][] publicationsIdData = {{""}};
         ArrayList<ArrayList<String>> publicationIdData = Queries.getPublicationIdTupleData(publicationId);
-        System.out.println("here " + publicationIdData);
         publicationsIdData = new String[publicationIdData.size()][publicationIdData.get(0).size()];
-        System.out.println("next " + publicationsIdData);
+
         for (int i = 0; i < publicationIdData.size(); i++) {
             for (int j = 0; j < publicationIdData.get(i).size(); j++) {
                 publicationsIdData[i][j] = publicationIdData.get(i).get(j);

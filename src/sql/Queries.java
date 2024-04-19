@@ -404,4 +404,33 @@ public class Queries {
 
         return publicationsData;
     }
+
+    private static ResultSet getPublicationsFromType(String type)
+    {
+        try {
+            Statement statement = Driver.getDriverConnection().createStatement();
+            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_TYPE_QUERY, type));
+            return result;
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+        return null;
+    }
+
+    public static ArrayList<ArrayList<String>> getPublicationsFromTypeData(String type)
+    {
+        ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
+        ResultSet publicationsResult = getPublicationsFromType(type);
+
+        try {
+            publicationsData = getPublicationDataFromQuery(publicationsResult);
+            publicationsResult.getStatement().close();
+            System.out.println("\nPublications Table Data Retrieval Complete!");
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+
+        return publicationsData;
+    }
+
 }

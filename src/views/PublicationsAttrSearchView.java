@@ -243,6 +243,47 @@ public class PublicationsAttrSearchView
         Menu.getMenuFrame().add(resultingTablesPanel);
     }
 
+    private static void populateNoResultFoundPanel() 
+    {
+        JPanel outputPanel = new JPanel();
+        outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
+
+        JLabel label = new JLabel("No results found, go back to main menu and try again.");
+        outputPanel.add(label);
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Menu.backButtonActionPerformed();
+            }
+        });
+        outputPanel.add(backButton);
+        outputPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        outputPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        Menu.getMenuFrame().add(outputPanel);
+    }
+
+    private static void handleResultPanel(String author, String title, 
+                        String year, String type, boolean displayPublicationId,
+                        boolean displayTitle,
+                        boolean displayYear,
+                        boolean displayType,
+                        boolean displaySummary,
+                        boolean displayAuthor,
+                        String sortOption,
+                        ArrayList<ArrayList<String>> publicationData,
+                        JPanel resultingTablesPanel) 
+    {
+        if (publicationData.size() == 0) {
+            populateNoResultFoundPanel();
+        } else {
+            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
+            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
+
+            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
+        }
+    }
+
     private static void populateResultingSearchPanel(String author, String title, 
                     String year, String type, boolean displayPublicationId,
                                 boolean displayTitle,
@@ -258,10 +299,9 @@ public class PublicationsAttrSearchView
 
             ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAuthorData(author);
 
-            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
-            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
-
-            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
+            handleResultPanel(author, title, year, type, displayPublicationId,
+                            displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
+                            sortOption, publicationData, resultingTablesPanel);
         } 
         else if (!author.isEmpty() && !title.isEmpty() && !year.isEmpty() && !type.isEmpty()) 
         {
@@ -269,10 +309,9 @@ public class PublicationsAttrSearchView
 
             ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAllInputData(author, title, year, type);
 
-            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
-            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
-
-            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
+            handleResultPanel(author, title, year, type, displayPublicationId,
+                            displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
+                            sortOption, publicationData, resultingTablesPanel);
         } 
         else if (!year.isEmpty() && !type.isEmpty() && !author.isEmpty() && title.isEmpty()) 
         {
@@ -280,10 +319,9 @@ public class PublicationsAttrSearchView
 
             ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAuthorYearTypeData(author, year, type);
 
-            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
-            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
-            
-            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
+            handleResultPanel(author, title, year, type, displayPublicationId,
+                            displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
+                            sortOption, publicationData, resultingTablesPanel);
         } 
         else if (!year.isEmpty() && !type.isEmpty() && author.isEmpty() && title.isEmpty()) 
         {
@@ -291,10 +329,9 @@ public class PublicationsAttrSearchView
 
             ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromYearTypeData(year, type);
 
-            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
-            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
-            
-            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
+            handleResultPanel(author, title, year, type, displayPublicationId,
+                            displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
+                            sortOption, publicationData, resultingTablesPanel);
         } 
         else if (!year.isEmpty() && type.isEmpty() && !author.isEmpty() && title.isEmpty()) 
         {
@@ -312,11 +349,10 @@ public class PublicationsAttrSearchView
             JPanel resultingTablesPanel = setUpFilteredOutputPanel();
 
             ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromYearTitleData(year, title);
-            
-            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
-            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
-            
-            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
+
+            handleResultPanel(author, title, year, type, displayPublicationId,
+                            displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
+                            sortOption, publicationData, resultingTablesPanel);
         }
         else if (year.isEmpty() && type.isEmpty() && !author.isEmpty() && !title.isEmpty()) 
         {
@@ -324,10 +360,19 @@ public class PublicationsAttrSearchView
 
             ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAuthorTitleData(author, title);
             
-            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
-            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
+            handleResultPanel(author, title, year, type, displayPublicationId,
+                            displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
+                            sortOption, publicationData, resultingTablesPanel);
+        }
+        else if (year.isEmpty() && !type.isEmpty() && author.isEmpty() && title.isEmpty()) 
+        {
+            JPanel resultingTablesPanel = setUpFilteredOutputPanel();
+
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromTypeData(type);
             
-            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
+            handleResultPanel(author, title, year, type, displayPublicationId,
+                            displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
+                            sortOption, publicationData, resultingTablesPanel);
         }
     }
 }
