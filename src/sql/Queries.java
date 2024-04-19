@@ -5,23 +5,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import utils.Statements;
+
 public class Queries {
-    
-    private static final String GET_PUBLICATIONS_TABLE_QUERY = "SELECT * FROM PUBLICATIONS";
-    private static final String GET_AUTHORS_TABLE_QUERY = "SELECT * FROM AUTHORS";
-    private static final String GET_PUBLICATION_FROM_ID_QUERY = "SELECT * FROM PUBLICATIONS WHERE PUBLICATIONID = %s";
-    private static final String GET_AUTHOR_COUNT_QUERY = "SELECT COUNT(a.author) AS COUNT FROM AUTHORS a JOIN PUBLICATIONS p ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (a.PUBLICATIONID = %s)";
-    private static final String GET_PUBLICATIONS_FROM_AUTHOR_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (a.AUTHOR LIKE '%s')";
-    private static final String GET_PUBLICATIONS_FROM_ALL_INPUTS_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (a.AUTHOR LIKE '%s') AND (p.TITLE LIKE '%s') AND (p.YEAR LIKE '%s') AND (p.TYPE LIKE '%s')";
-    private static final String GET_PUBLICATIONS_FROM_ALL_AUTHOR_YEAR_TYPE_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (a.AUTHOR LIKE '%s') AND (p.YEAR LIKE '%s') AND (p.TYPE LIKE '%s')";
-    private static final String GET_PUBLICATIONS_FROM_YEAR_TYPE_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (p.YEAR LIKE '%s') AND (p.TYPE LIKE '%s')";
-    private static final String GET_PUBLICATIONS_FROM_YEAR_AUTHOR_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (p.YEAR LIKE '%s') AND (a.AUTHOR LIKE '%s')";
 
     private static ResultSet getPublicationsTable()
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(GET_PUBLICATIONS_TABLE_QUERY);
+            ResultSet result = statement.executeQuery(Statements.GET_PUBLICATIONS_TABLE_QUERY);
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -68,7 +60,7 @@ public class Queries {
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(GET_AUTHORS_TABLE_QUERY);
+            ResultSet result = statement.executeQuery(Statements.GET_AUTHORS_TABLE_QUERY);
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -109,7 +101,7 @@ public class Queries {
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(GET_PUBLICATION_FROM_ID_QUERY, publicationId));
+            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATION_FROM_ID_QUERY, publicationId));
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -156,7 +148,7 @@ public class Queries {
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(GET_AUTHOR_COUNT_QUERY, publicationId));
+            ResultSet result = statement.executeQuery(String.format(Statements.GET_AUTHOR_COUNT_QUERY, publicationId));
             System.out.println(result);
             return result;
         } catch (SQLException sqle) {
@@ -220,7 +212,7 @@ public class Queries {
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(GET_PUBLICATIONS_FROM_YEAR_AUTHOR_QUERY, year, author));
+            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_YEAR_AUTHOR_QUERY, year, author));
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -247,7 +239,7 @@ public class Queries {
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(GET_PUBLICATIONS_FROM_YEAR_TYPE_QUERY, year, type));
+            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_YEAR_TYPE_QUERY, year, type));
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -275,7 +267,7 @@ public class Queries {
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(GET_PUBLICATIONS_FROM_ALL_AUTHOR_YEAR_TYPE_QUERY,
+            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_ALL_AUTHOR_YEAR_TYPE_QUERY,
                 author, year, type));
             return result;
         } catch (SQLException sqle) {
@@ -304,7 +296,7 @@ public class Queries {
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(GET_PUBLICATIONS_FROM_ALL_INPUTS_QUERY,
+            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_ALL_INPUTS_QUERY,
                 author, title, year, type));
             return result;
         } catch (SQLException sqle) {
@@ -333,7 +325,7 @@ public class Queries {
     {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
-            ResultSet result = statement.executeQuery(String.format(GET_PUBLICATIONS_FROM_AUTHOR_QUERY, author));
+            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_AUTHOR_QUERY, author));
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -345,6 +337,62 @@ public class Queries {
     {
         ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
         ResultSet publicationsResult = getPublicationsFromAuthor(author);
+
+        try {
+            publicationsData = getPublicationDataFromQuery(publicationsResult);
+            publicationsResult.getStatement().close();
+            System.out.println("\nPublications Table Data Retrieval Complete!");
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+
+        return publicationsData;
+    }
+
+    private static ResultSet getPublicationsFromYearTitle(String year, String title)
+    {
+        try {
+            Statement statement = Driver.getDriverConnection().createStatement();
+            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_YEAR_TITLE_QUERY, year, title));
+            return result;
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+        return null;
+    }
+
+    public static ArrayList<ArrayList<String>> getPublicationsFromYearTitleData(String year, String title)
+    {
+        ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
+        ResultSet publicationsResult = getPublicationsFromYearTitle(year, title);
+
+        try {
+            publicationsData = getPublicationDataFromQuery(publicationsResult);
+            publicationsResult.getStatement().close();
+            System.out.println("\nPublications Table Data Retrieval Complete!");
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+
+        return publicationsData;
+    }
+
+    private static ResultSet getPublicationsFromAuthorTitle(String author, String title)
+    {
+        try {
+            Statement statement = Driver.getDriverConnection().createStatement();
+            ResultSet result = statement.executeQuery(String.format(Statements.GET_PUBLICATIONS_FROM_AUTHOR_TITLE_QUERY, author, title));
+            return result;
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+        return null;
+    }
+
+    public static ArrayList<ArrayList<String>> getPublicationsFromAuthorTitleData(String author, String title)
+    {
+        ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
+        ResultSet publicationsResult = getPublicationsFromAuthorTitle(author, title);
 
         try {
             publicationsData = getPublicationDataFromQuery(publicationsResult);

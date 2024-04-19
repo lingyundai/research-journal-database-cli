@@ -301,6 +301,28 @@ public class PublicationsAttrSearchView
             JPanel resultingTablesPanel = setUpFilteredOutputPanel();
 
             ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromYearAuthorData(year, author);
+
+            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
+            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
+            
+            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
+        }
+        else if (!year.isEmpty() && type.isEmpty() && author.isEmpty() && !title.isEmpty()) 
+        {
+            JPanel resultingTablesPanel = setUpFilteredOutputPanel();
+
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromYearTitleData(year, title);
+            
+            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
+            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
+            
+            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
+        }
+        else if (year.isEmpty() && type.isEmpty() && !author.isEmpty() && !title.isEmpty()) 
+        {
+            JPanel resultingTablesPanel = setUpFilteredOutputPanel();
+
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAuthorTitleData(author, title);
             
             JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
             displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
