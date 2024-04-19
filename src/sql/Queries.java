@@ -11,7 +11,10 @@ public class Queries {
     private static final String GET_AUTHORS_TABLE_QUERY = "SELECT * FROM AUTHORS";
     private static final String GET_PUBLICATION_FROM_ID_QUERY = "SELECT * FROM PUBLICATIONS WHERE PUBLICATIONID = %s";
     private static final String GET_AUTHOR_COUNT_QUERY = "SELECT COUNT(a.author) AS COUNT FROM AUTHORS a JOIN PUBLICATIONS p ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (a.PUBLICATIONID = %s)";
-    private static final String GET_PUBLICATIONS_FROM_AUTHOR_QUERY = "SELECT p.* FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (a.AUTHOR LIKE '%s')";
+    private static final String GET_PUBLICATIONS_FROM_AUTHOR_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (a.AUTHOR LIKE '%s')";
+    private static final String GET_PUBLICATIONS_FROM_ALL_INPUTS_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (a.AUTHOR LIKE '%s') AND (p.TITLE LIKE '%s') AND (p.YEAR LIKE '%s') AND (p.TYPE LIKE '%s')";
+    private static final String GET_PUBLICATIONS_FROM_ALL_AUTHOR_YEAR_TYPE_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (a.AUTHOR LIKE '%s') AND (p.YEAR LIKE '%s') AND (p.TYPE LIKE '%s')";
+    private static final String GET_PUBLICATIONS_FROM_YEAR_TYPE_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (p.YEAR LIKE '%s') AND (p.TYPE LIKE '%s')";
 
     private static ResultSet getPublicationsTable()
     {
@@ -106,7 +109,6 @@ public class Queries {
         try {
             Statement statement = Driver.getDriverConnection().createStatement();
             ResultSet result = statement.executeQuery(String.format(GET_PUBLICATION_FROM_ID_QUERY, publicationId));
-            System.out.println(result);
             return result;
         } catch (SQLException sqle) {
             System.out.println(sqle);
@@ -181,6 +183,152 @@ public class Queries {
         return authorCount;
     }
 
+    private static ResultSet getPublicationsFromYearType(String year, String type) 
+    {
+        try {
+            Statement statement = Driver.getDriverConnection().createStatement();
+            ResultSet result = statement.executeQuery(String.format(GET_PUBLICATIONS_FROM_YEAR_TYPE_QUERY, year, type));
+            return result;
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+        return null;
+    }
+
+    public static ArrayList<ArrayList<String>> getPublicationsFromYearTypeData(String year, String type) 
+    {
+        ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
+
+        ResultSet publicationsResult = getPublicationsFromYearType(year, type);
+        try {
+            if (publicationsResult != null) {
+                System.out.println("\nGetting Publications Table Data From Year Type...");
+                while (publicationsResult.next()) {
+                    String pubID = publicationsResult.getString("PUBLICATIONID");
+                    String pubYear = publicationsResult.getString("YEAR");
+                    String pubType = publicationsResult.getString("TYPE");
+                    String pubTitle = publicationsResult.getString("TITLE");
+                    String pubSummary = publicationsResult.getString("SUMMARY");
+                    String pubAuthor = publicationsResult.getString("AUTHOR");
+    
+                    ArrayList<String> row = new ArrayList<>();
+                    row.add(pubID);
+                    row.add(pubYear);
+                    row.add(pubType);
+                    row.add(pubTitle);
+                    row.add(pubSummary);
+                    row.add(pubAuthor);
+
+                    publicationsData.add(row);
+                }
+                publicationsResult.getStatement().close();
+                System.out.println("\nPublications Table Data From Year Type Inputs Retrieval Complete!");
+            }
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+
+        return publicationsData;
+    }
+
+    private static ResultSet getPublicationsFromAuthorYearType(String author, String year, String type)
+    {
+        try {
+            Statement statement = Driver.getDriverConnection().createStatement();
+            ResultSet result = statement.executeQuery(String.format(GET_PUBLICATIONS_FROM_ALL_AUTHOR_YEAR_TYPE_QUERY,
+                author, year, type));
+            return result;
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+        return null;
+    }
+
+    public static ArrayList<ArrayList<String>> getPublicationsFromAuthorYearTypeData(String author, String year, String type) 
+    {
+        ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
+
+        ResultSet publicationsResult = getPublicationsFromAuthorYearType(author, year, type);
+        try {
+            if (publicationsResult != null) {
+                System.out.println("\nGetting Publications Table Data From Author Year Type...");
+                while (publicationsResult.next()) {
+                    String pubID = publicationsResult.getString("PUBLICATIONID");
+                    String pubYear = publicationsResult.getString("YEAR");
+                    String pubType = publicationsResult.getString("TYPE");
+                    String pubTitle = publicationsResult.getString("TITLE");
+                    String pubSummary = publicationsResult.getString("SUMMARY");
+                    String pubAuthor = publicationsResult.getString("AUTHOR");
+    
+                    ArrayList<String> row = new ArrayList<>();
+                    row.add(pubID);
+                    row.add(pubYear);
+                    row.add(pubType);
+                    row.add(pubTitle);
+                    row.add(pubSummary);
+                    row.add(pubAuthor);
+
+                    publicationsData.add(row);
+                }
+                publicationsResult.getStatement().close();
+                System.out.println("\nPublications Table Data From Author Year Type Inputs Retrieval Complete!");
+            }
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+
+        return publicationsData;
+    }
+    
+    private static ResultSet getPublicationsFromAllInputs(String author, String title, String year, String type)
+    {
+        try {
+            Statement statement = Driver.getDriverConnection().createStatement();
+            ResultSet result = statement.executeQuery(String.format(GET_PUBLICATIONS_FROM_ALL_INPUTS_QUERY,
+                author, title, year, type));
+            return result;
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+        return null;
+    }
+
+    public static ArrayList<ArrayList<String>> getPublicationsFromAllInputData(String author, String title, String year, String type) 
+    {
+        ArrayList<ArrayList<String>> publicationsData = new ArrayList<ArrayList<String>>();
+
+        ResultSet publicationsResult = getPublicationsFromAllInputs(author, title, year, type);
+        try {
+            if (publicationsResult != null) {
+                System.out.println("\nGetting Publications Table Data From All Inputs...");
+                while (publicationsResult.next()) {
+                    String pubID = publicationsResult.getString("PUBLICATIONID");
+                    String pubYear = publicationsResult.getString("YEAR");
+                    String pubType = publicationsResult.getString("TYPE");
+                    String pubTitle = publicationsResult.getString("TITLE");
+                    String pubSummary = publicationsResult.getString("SUMMARY");
+                    String pubAuthor = publicationsResult.getString("AUTHOR");
+    
+                    ArrayList<String> row = new ArrayList<>();
+                    row.add(pubID);
+                    row.add(pubYear);
+                    row.add(pubType);
+                    row.add(pubTitle);
+                    row.add(pubSummary);
+                    row.add(pubAuthor);
+
+                    publicationsData.add(row);
+                }
+                publicationsResult.getStatement().close();
+                System.out.println("\nPublications Table Data From All Inputs Retrieval Complete!");
+            }
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+
+        return publicationsData;
+    }
+
     private static ResultSet getPublicationsFromAuthor(String author)
     {
         try {
@@ -208,6 +356,7 @@ public class Queries {
                     String type = publicationsResult.getString("TYPE");
                     String title = publicationsResult.getString("TITLE");
                     String summary = publicationsResult.getString("SUMMARY");
+                    String pubAuthor = publicationsResult.getString("AUTHOR");
     
                     ArrayList<String> row = new ArrayList<>();
                     row.add(pubID);
@@ -215,6 +364,7 @@ public class Queries {
                     row.add(type);
                     row.add(title);
                     row.add(summary);
+                    row.add(pubAuthor);
 
                     publicationsData.add(row);
                 }
