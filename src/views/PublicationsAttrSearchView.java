@@ -136,7 +136,8 @@ public class PublicationsAttrSearchView
                                 typeOptionCheckbox.isSelected(),
                                 summaryOptionCheckbox.isSelected(),
                                 authorOptionCheckbox.isSelected(),
-                                sortOptionComboBox.getSelectedItem().toString());
+                                sortOptionComboBox.getSelectedItem().toString(), 
+                                outputPanel);
             }
         });
         
@@ -153,6 +154,31 @@ public class PublicationsAttrSearchView
         Menu.getMenuFrame().add(outputPanel);
     }
 
+    private static void handleCheckboxSelection(String author, String title, 
+                String year, String type, boolean displayPublicationId,
+                boolean displayTitle,
+                boolean displayYear,
+                boolean displayType,
+                boolean displaySummary,
+                boolean displayAuthor,
+                String sortOption, 
+                JPanel outputPanel)
+    {
+        if (displayAuthor == false && displayTitle == false && displayPublicationId == false &&
+            displaySummary == false && displayType == false && displayYear == false) {
+                JLabel invalidInputLabel = new JLabel("Please check at least one option.");
+                outputPanel.add(invalidInputLabel);
+                outputPanel.revalidate();
+        } else {
+                populateResultingSearchPanel(author, title,
+                year, type, displayPublicationId,
+                displayTitle,
+                displayYear, displayType,
+                displaySummary, displayAuthor, 
+                sortOption);
+        }
+    }
+
     private static void enterOutputButtonActionPerformed(String author, String title, 
                     String year, String type, boolean displayPublicationId,
                                 boolean displayTitle,
@@ -160,14 +186,9 @@ public class PublicationsAttrSearchView
                                 boolean displayType,
                                 boolean displaySummary,
                                 boolean displayAuthor,
-                                String sortOption) {
-                                    populateResultingSearchPanel(author, title,
-                                    year, type, displayPublicationId,
-                                    displayTitle,
-                                    displayYear, displayType,
-                                    displaySummary, displayAuthor, 
-                                    sortOption);
-
+                                String sortOption, JPanel outputPanel) {
+        handleCheckboxSelection(author, title, year, type, displayPublicationId, displayTitle,
+                    displayYear, displayType, displaySummary, displayAuthor, sortOption, outputPanel);
     }
 
     private static JTable filterOutputFieldsResult(String author, String title, 
@@ -339,10 +360,9 @@ public class PublicationsAttrSearchView
 
             ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromYearAuthorData(year, author);
 
-            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
-            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
-            
-            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
+            handleResultPanel(author, title, year, type, displayPublicationId,
+                            displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
+                            sortOption, publicationData, resultingTablesPanel);
         }
         else if (!year.isEmpty() && type.isEmpty() && author.isEmpty() && !title.isEmpty()) 
         {
