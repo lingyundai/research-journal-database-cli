@@ -24,7 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentListener;
 
 public class PublicationsAttrSearchView
 {
@@ -171,6 +170,79 @@ public class PublicationsAttrSearchView
 
     }
 
+    private static JTable filterOutputFieldsResult(String author, String title, 
+                        String year, String type, boolean displayPublicationId,
+                        boolean displayTitle,
+                        boolean displayYear,
+                        boolean displayType,
+                        boolean displaySummary,
+                        boolean displayAuthor,
+                        String sortOption,
+                        ArrayList<ArrayList<String>> publicationData)
+    {
+        int numChosen = 0;
+        boolean[] chosenDisplays = {displayPublicationId, displayYear, displayType, displayTitle, displaySummary, displayAuthor};
+        String[] publicationsColumns = {"Publication ID", "Year", "Type", "Title", "Summary", "Author"};
+        String[] chosenColumns = {"", "", "", "", "", ""};
+        for (int i = 0; i < publicationsColumns.length; i++) {
+            if (chosenDisplays[i]) {
+                chosenColumns[i] = publicationsColumns[i];
+                numChosen++;
+            }
+        }
+
+        String[][] publicationsData = {{""}};
+        publicationsData = new String[publicationData.size()][numChosen];
+        for (int i = 0; i < publicationData.size(); i++) {
+            int chosenIndex = 0;
+            for (int j = 0; j < publicationData.get(i).size(); j++) {
+                if (!chosenColumns[j].isEmpty()) {
+                    publicationsData[i][chosenIndex] = publicationData.get(i).get(j);
+                    chosenIndex++;
+                }
+            }
+        }
+
+        int filteredChosen = 0;
+        String[] filteredColumns = new String[numChosen];
+        for (int i = 0; i < publicationsColumns.length; i++) {
+            if (chosenDisplays[i]) {
+                filteredColumns[filteredChosen] = publicationsColumns[i];
+                filteredChosen++;
+            }
+        }
+
+        JTable publicationsTable = new JTable(publicationsData, filteredColumns);
+        return publicationsTable;
+    }
+
+    private static JPanel setUpFilteredOutputPanel()
+    {
+        Menu.clearFrame();
+        JPanel resultingTablesPanel = new JPanel();
+        resultingTablesPanel.setLayout(new BoxLayout(resultingTablesPanel, BoxLayout.Y_AXIS));
+
+        return resultingTablesPanel;
+    }
+
+    private static void populateFilteredOutputPanel(JTable publicationsTable, 
+                                            JPanel resultingTablesPanel)
+    {
+        publicationsTable.setFillsViewportHeight(true);
+        JScrollPane publicationsPane = new JScrollPane(publicationsTable);
+        resultingTablesPanel.add(publicationsPane);
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Menu.backButtonActionPerformed();
+            }
+        });
+
+        resultingTablesPanel.add(backButton);
+        Menu.getMenuFrame().add(resultingTablesPanel);
+    }
+
     private static void populateResultingSearchPanel(String author, String title, 
                     String year, String type, boolean displayPublicationId,
                                 boolean displayTitle,
@@ -182,217 +254,58 @@ public class PublicationsAttrSearchView
         
         if (!author.isEmpty() && title.isEmpty() && year.isEmpty() && type.isEmpty())
         {
-            int numChosen = 0;
-            boolean[] chosenDisplays = {displayPublicationId, displayYear, displayType, displayTitle, displaySummary, displayAuthor};
-            String[] publicationsColumns = {"Publication ID", "Year", "Type", "Title", "Summary", "Author"};
-            String[] chosenColumns = {"", "", "", "", "", ""};
-            for (int i = 0; i < publicationsColumns.length; i++) {
-                if (chosenDisplays[i]) {
-                    chosenColumns[i] = publicationsColumns[i];
-                    numChosen++;
-                }
-            }
+            JPanel resultingTablesPanel = setUpFilteredOutputPanel();
 
-            String[][] publicationsData = {{""}};
             ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAuthorData(author);
-            publicationsData = new String[publicationData.size()][numChosen];
-            for (int i = 0; i < publicationData.size(); i++) {
-                int chosenIndex = 0;
-                for (int j = 0; j < publicationData.get(i).size(); j++) {
-                    if (!chosenColumns[j].isEmpty()) {
-                        publicationsData[i][chosenIndex] = publicationData.get(i).get(j);
-                        chosenIndex++;
-                    }
-                }
-            }
 
-            int filteredChosen = 0;
-            String[] filteredColumns = new String[numChosen];
-            for (int i = 0; i < publicationsColumns.length; i++) {
-                if (chosenDisplays[i]) {
-                    filteredColumns[filteredChosen] = publicationsColumns[i];
-                    filteredChosen++;
-                }
-            }
+            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
+            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
 
-            Menu.clearFrame();
-            JPanel resultingTablesPanel = new JPanel();
-            resultingTablesPanel.setLayout(new BoxLayout(resultingTablesPanel, BoxLayout.Y_AXIS));
-
-            JTable publicationsTable = new JTable(publicationsData, filteredColumns);
-            publicationsTable.setFillsViewportHeight(true);
-            JScrollPane publicationsPane = new JScrollPane(publicationsTable);
-            resultingTablesPanel.add(publicationsPane);
-
-            JButton backButton = new JButton("Back");
-            backButton.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    Menu.backButtonActionPerformed();
-                }
-            });
-
-            resultingTablesPanel.add(backButton);
-            Menu.getMenuFrame().add(resultingTablesPanel);
+            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
         } 
         else if (!author.isEmpty() && !title.isEmpty() && !year.isEmpty() && !type.isEmpty()) 
         {
-            int numChosen = 0;
-            boolean[] chosenDisplays = {displayPublicationId, displayYear, displayType, displayTitle, displaySummary, displayAuthor};
-            String[] publicationsColumns = {"Publication ID", "Year", "Type", "Title", "Summary", "Author"};
-            String[] chosenColumns = {"", "", "", "", "", ""};
-            for (int i = 0; i < publicationsColumns.length; i++) {
-                if (chosenDisplays[i]) {
-                    chosenColumns[i] = publicationsColumns[i];
-                    numChosen++;
-                }
-            }
+            JPanel resultingTablesPanel = setUpFilteredOutputPanel();
 
-            String[][] publicationsData = {{""}};
             ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAllInputData(author, title, year, type);
-            publicationsData = new String[publicationData.size()][numChosen];
-            for (int i = 0; i < publicationData.size(); i++) {
-                int chosenIndex = 0;
-                for (int j = 0; j < publicationData.get(i).size(); j++) {
-                    if (!chosenColumns[j].isEmpty()) {
-                        publicationsData[i][chosenIndex] = publicationData.get(i).get(j);
-                        chosenIndex++;
-                    }
-                }
-            }
 
-            int filteredChosen = 0;
-            String[] filteredColumns = new String[numChosen];
-            for (int i = 0; i < publicationsColumns.length; i++) {
-                if (chosenDisplays[i]) {
-                    filteredColumns[filteredChosen] = publicationsColumns[i];
-                    filteredChosen++;
-                }
-            }
+            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
+            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
 
-            Menu.clearFrame();
-            JPanel resultingTablesPanel = new JPanel();
-            resultingTablesPanel.setLayout(new BoxLayout(resultingTablesPanel, BoxLayout.Y_AXIS));
-
-            JTable publicationsTable = new JTable(publicationsData, filteredColumns);
-            publicationsTable.setFillsViewportHeight(true);
-            JScrollPane publicationsPane = new JScrollPane(publicationsTable);
-            resultingTablesPanel.add(publicationsPane);
-
-            JButton backButton = new JButton("Back");
-            backButton.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    Menu.backButtonActionPerformed();
-                }
-            });
-
-            resultingTablesPanel.add(backButton);
-            Menu.getMenuFrame().add(resultingTablesPanel);
-        } else if (!year.isEmpty() && !type.isEmpty() && !author.isEmpty() && title.isEmpty()) 
-        {
-            int numChosen = 0;
-            boolean[] chosenDisplays = {displayPublicationId, displayAuthor, displayYear, displayType, displayTitle, displaySummary, displayAuthor};
-            String[] publicationsColumns = {"Publication ID", "Year", "Type", "Title", "Summary", "Author"};
-            String[] chosenColumns = {"", "", "", "", "", ""};
-            for (int i = 0; i < publicationsColumns.length; i++) {
-                if (chosenDisplays[i]) {
-                    chosenColumns[i] = publicationsColumns[i];
-                    numChosen++;
-                }
-            }
-
-            String[][] publicationsData = {{""}};
-            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAuthorYearTypeData(author, year, type);
-            publicationsData = new String[publicationData.size()][numChosen];
-            for (int i = 0; i < publicationData.size(); i++) {
-                int chosenIndex = 0;
-                for (int j = 0; j < publicationData.get(i).size(); j++) {
-                    if (!chosenColumns[j].isEmpty()) {
-                        publicationsData[i][chosenIndex] = publicationData.get(i).get(j);
-                        chosenIndex++;
-                    }
-                }
-            }
-
-            int filteredChosen = 0;
-            String[] filteredColumns = new String[numChosen];
-            for (int i = 0; i < publicationsColumns.length; i++) {
-                if (chosenDisplays[i]) {
-                    filteredColumns[filteredChosen] = publicationsColumns[i];
-                    filteredChosen++;
-                }
-            }
-
-            Menu.clearFrame();
-            JPanel resultingTablesPanel = new JPanel();
-            resultingTablesPanel.setLayout(new BoxLayout(resultingTablesPanel, BoxLayout.Y_AXIS));
-
-            JTable publicationsTable = new JTable(publicationsData, filteredColumns);
-            publicationsTable.setFillsViewportHeight(true);
-            JScrollPane publicationsPane = new JScrollPane(publicationsTable);
-            resultingTablesPanel.add(publicationsPane);
-
-            JButton backButton = new JButton("Back");
-            backButton.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    Menu.backButtonActionPerformed();
-                }
-            });
-
-            resultingTablesPanel.add(backButton);
-            Menu.getMenuFrame().add(resultingTablesPanel);
-        } else if (!year.isEmpty() && !type.isEmpty() && author.isEmpty() && title.isEmpty()) 
-        {
-            int numChosen = 0;
-            boolean[] chosenDisplays = {displayPublicationId, displayAuthor, displayYear, displayType, displayTitle, displaySummary, displayAuthor};
-            String[] publicationsColumns = {"Publication ID", "Year", "Type", "Title", "Summary", "Author"};
-            String[] chosenColumns = {"", "", "", "", "", ""};
-            for (int i = 0; i < publicationsColumns.length; i++) {
-                if (chosenDisplays[i]) {
-                    chosenColumns[i] = publicationsColumns[i];
-                    numChosen++;
-                }
-            }
-
-            String[][] publicationsData = {{""}};
-            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromYearTypeData(year, type);
-            publicationsData = new String[publicationData.size()][numChosen];
-            for (int i = 0; i < publicationData.size(); i++) {
-                int chosenIndex = 0;
-                for (int j = 0; j < publicationData.get(i).size(); j++) {
-                    if (!chosenColumns[j].isEmpty()) {
-                        publicationsData[i][chosenIndex] = publicationData.get(i).get(j);
-                        chosenIndex++;
-                    }
-                }
-            }
-
-            int filteredChosen = 0;
-            String[] filteredColumns = new String[numChosen];
-            for (int i = 0; i < publicationsColumns.length; i++) {
-                if (chosenDisplays[i]) {
-                    filteredColumns[filteredChosen] = publicationsColumns[i];
-                    filteredChosen++;
-                }
-            }
-
-            Menu.clearFrame();
-            JPanel resultingTablesPanel = new JPanel();
-            resultingTablesPanel.setLayout(new BoxLayout(resultingTablesPanel, BoxLayout.Y_AXIS));
-
-            JTable publicationsTable = new JTable(publicationsData, filteredColumns);
-            publicationsTable.setFillsViewportHeight(true);
-            JScrollPane publicationsPane = new JScrollPane(publicationsTable);
-            resultingTablesPanel.add(publicationsPane);
-
-            JButton backButton = new JButton("Back");
-            backButton.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    Menu.backButtonActionPerformed();
-                }
-            });
-
-            resultingTablesPanel.add(backButton);
-            Menu.getMenuFrame().add(resultingTablesPanel);
+            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
         } 
+        else if (!year.isEmpty() && !type.isEmpty() && !author.isEmpty() && title.isEmpty()) 
+        {
+            JPanel resultingTablesPanel = setUpFilteredOutputPanel();
+
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAuthorYearTypeData(author, year, type);
+
+            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
+            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
+            
+            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
+        } 
+        else if (!year.isEmpty() && !type.isEmpty() && author.isEmpty() && title.isEmpty()) 
+        {
+            JPanel resultingTablesPanel = setUpFilteredOutputPanel();
+
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromYearTypeData(year, type);
+
+            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
+            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
+            
+            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
+        } 
+        else if (!year.isEmpty() && type.isEmpty() && !author.isEmpty() && title.isEmpty()) 
+        {
+            JPanel resultingTablesPanel = setUpFilteredOutputPanel();
+
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromYearAuthorData(year, author);
+            
+            JTable publicationsTable = filterOutputFieldsResult(author, title, year, type, displayPublicationId,
+            displayTitle, displayYear, displayType, displaySummary, displayAuthor, sortOption, publicationData);
+            
+            populateFilteredOutputPanel(publicationsTable, resultingTablesPanel);
+        }
     }
 }
