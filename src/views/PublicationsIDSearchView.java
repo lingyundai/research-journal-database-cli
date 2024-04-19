@@ -7,6 +7,11 @@
  * Last Modified: 4/18
  */
 
+package views;
+
+import gui.Menu;
+import sql.Queries;
+
 import java.awt.Component;
 import java.util.ArrayList;
 
@@ -19,7 +24,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-class PublicationsIDSearchView
+public class PublicationsIDSearchView
 {
     public static void populatePublicationIdPanel()
     {
@@ -62,7 +67,7 @@ class PublicationsIDSearchView
     private static void populateResultingTuplePanel(String publicationId) 
     {
         String[][] publicationsIdData = {{""}};
-        ArrayList<ArrayList<String>> publicationIdData = Driver.getPublicationIdTupleData(publicationId);
+        ArrayList<ArrayList<String>> publicationIdData = Queries.getPublicationIdTupleData(publicationId);
         System.out.println("here " + publicationIdData);
         publicationsIdData = new String[publicationIdData.size()][publicationIdData.get(0).size()];
         System.out.println("next " + publicationsIdData);
@@ -72,7 +77,7 @@ class PublicationsIDSearchView
             }
         }
 
-        String[][] authorCountArr = {{Integer.toString(Driver.getAuthorCountData(publicationId))}};
+    String[][] authorCountArr = {{Integer.toString(Queries.getAuthorCountData(publicationId))}};
 
         Menu.clearFrame();
         JPanel resultingTablesPanel = new JPanel();

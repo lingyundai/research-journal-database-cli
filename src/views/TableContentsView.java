@@ -7,6 +7,11 @@
  * Last Modified: 4/18
  */
 
+package views;
+
+import gui.Menu;
+import sql.Queries;
+
 import java.awt.Component;
 import java.util.ArrayList;
 
@@ -72,7 +77,7 @@ public class TableContentsView
     {
         String[][] publicationData = {{""}};
         if (viewPublications) {
-            ArrayList<ArrayList<String>> publicationsData = Driver.getPublicationsData();
+            ArrayList<ArrayList<String>> publicationsData = Queries.getPublicationsData();
             publicationData = new String[publicationsData.size()][publicationsData.get(0).size()];
             for (int i = 0; i < publicationsData.size(); i++) {
                 for (int j = 0; j < publicationsData.get(i).size(); j++) {
@@ -83,7 +88,7 @@ public class TableContentsView
 
         String[][] authorData = {{""}};
         if (viewAuthors) {
-            ArrayList<ArrayList<String>> authorsData = Driver.getAuthorsData();
+        ArrayList<ArrayList<String>> authorsData = Queries.getAuthorsData();
             authorData = new String[authorsData.size()][authorsData.get(0).size()];
             for (int i = 0; i < authorsData.size(); i++) {
                 for (int j = 0; j < authorsData.get(i).size(); j++) {

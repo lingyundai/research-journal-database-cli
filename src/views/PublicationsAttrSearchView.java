@@ -7,9 +7,13 @@
  * Last Modified: 4/18
  */
 
+package views;
+
+import gui.Menu;
+import sql.Queries;
+
 import java.awt.Component;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -23,6 +27,7 @@ import javax.swing.JTextField;
 
 public class PublicationsAttrSearchView
 {
+
     public static void populateAttributePanel() 
     {
         JPanel attributePanel = new JPanel();
@@ -77,15 +82,6 @@ public class PublicationsAttrSearchView
     {
         Menu.clearFrame();
         populateOutputFieldPanel(author, title, year, type);
-
-        /*
-        Cases:
-        1. User enters Author only
-            Returns publications written by author
-        2. User enters some/all from title, year, and type
-            Returns publications with attributes (title, year, and type are in Publications only)
-        3. User enters author and some/all from title, year, and type
-        */
     }
 
     private static void populateOutputFieldPanel(String author, String title, String year, String type) 
@@ -186,7 +182,7 @@ public class PublicationsAttrSearchView
             }
 
             String[][] publicationsData = {{""}};
-            ArrayList<ArrayList<String>> publicationData = Driver.getPublicationsFromAuthorData(author);
+            ArrayList<ArrayList<String>> publicationData = Queries.getPublicationsFromAuthorData(author);
             System.out.println("here " + publicationData);
             publicationsData = new String[publicationData.size()][numChosen];
             System.out.println("next " + publicationsData);

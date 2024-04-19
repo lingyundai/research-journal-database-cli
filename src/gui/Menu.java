@@ -1,3 +1,4 @@
+package gui;
 /**
  * File: Menu.java
  * Authors: Lauren Dennedy G01462079, Lin Dai _________
@@ -8,6 +9,11 @@
  */
 
 import javax.swing.*;
+
+import sql.Driver;
+import views.PublicationsAttrSearchView;
+import views.PublicationsIDSearchView;
+import views.TableContentsView;
 
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
@@ -194,11 +200,6 @@ public class Menu {
     }
     
     private static void attributeButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        clearFrame();
-        PublicationsAttrSearchView.populateAttributePanel();
-    }
-
-    private static void enterAttributeButtonActionPerformed(java.awt.event.ActionEvent evt) {
         clearFrame();
         PublicationsAttrSearchView.populateAttributePanel();
     }
