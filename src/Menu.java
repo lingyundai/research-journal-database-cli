@@ -197,4 +197,9 @@ public class Menu {
         clearFrame();
         PublicationsAttrSearchView.populateAttributePanel();
     }
+
+    private static void enterAttributeButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        clearFrame();
+        PublicationsAttrSearchView.populateAttributePanel();
+    }
 }

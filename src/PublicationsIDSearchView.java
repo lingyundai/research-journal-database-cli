@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -71,15 +72,28 @@ class PublicationsIDSearchView
             }
         }
 
+        String[][] authorCountArr = {{Integer.toString(Driver.getAuthorCountData(publicationId))}};
+
         Menu.clearFrame();
         JPanel resultingTablesPanel = new JPanel();
         resultingTablesPanel.setLayout(new BoxLayout(resultingTablesPanel, BoxLayout.Y_AXIS));
+        JSplitPane bothTables = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
         String[] publicationsColumns = {"Publication ID", "Year", "Type", "Title", "Summary"};
         JTable publicationIdTable = new JTable(publicationsIdData, publicationsColumns);
         publicationIdTable.setFillsViewportHeight(true);
         JScrollPane publicationIdPane = new JScrollPane(publicationIdTable);
         resultingTablesPanel.add(publicationIdPane);
+
+        String[] authorsColumns = {"Author Count"};
+        JTable authorsTable = new JTable(authorCountArr, authorsColumns);
+        authorsTable.setFillsViewportHeight(true);
+        JScrollPane authorsPane = new JScrollPane(authorsTable);
+
+        bothTables.add(publicationIdPane);
+        bothTables.add(authorsPane);
+        bothTables.setDividerLocation(1.0);
+        resultingTablesPanel.add(bothTables);
 
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
