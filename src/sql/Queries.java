@@ -208,6 +208,77 @@ public class Queries {
         return publicationsData;
     }
 
+    public static ArrayList<ArrayList<String>> getAllDataFromCustomSearch(String author, String title, String year, String type, String sortOption)
+    {
+        String query = buildCustomSearchQuery(author, title, year, type, sortOption);
+
+        ResultSet publicationsResult = getAllDataFromCustomSearchResults(query);
+        ArrayList<ArrayList<String>> allData = new ArrayList<ArrayList<String>>();
+        try {
+            allData = getPublicationDataFromQuery(publicationsResult);
+            publicationsResult.getStatement().close();
+            System.out.println("\nAll Data From Custom Inputs Retrieval Complete!");
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+
+        return allData;
+    }
+
+    private static String buildCustomSearchQuery(String author, String title, String year, String type, String sortOption)
+    {
+        String query = Statements.CUSTOM_SEARCH_HEADER;
+        boolean hasFirstCondition = false;
+
+        if (!author.isEmpty()) {
+            query = query + String.format(Statements.CONDITION_AUTHOR, author);
+            hasFirstCondition = true;
+        }
+
+        if (!title.isEmpty()) {
+            if (hasFirstCondition) {
+                query = query + " AND " + String.format(Statements.CONDITION_TITLE, title);
+            } else {
+                query = query + String.format(Statements.CONDITION_TITLE, title);
+                hasFirstCondition = true;
+            }
+        }
+
+        if (!year.isEmpty()) {
+            if (hasFirstCondition) {
+                query = query + " AND " + String.format(Statements.CONDITION_YEAR, year);
+            } else {
+                query = query + String.format(Statements.CONDITION_YEAR, year);
+                hasFirstCondition = true;
+            }
+        }
+
+        if (!type.isEmpty()) {
+            if (hasFirstCondition) {
+                query = query + " AND " + String.format(Statements.CONDITION_TYPE, type);
+            } else {
+                query = query + String.format(Statements.CONDITION_TYPE, type);
+                hasFirstCondition = true;
+            }
+        }
+
+        query = query + String.format(Statements.ORDER_BY, sortOption);
+        return query;
+    }
+
+    private static ResultSet getAllDataFromCustomSearchResults(String query)
+    {
+        try {
+            Statement statement = Driver.getDriverConnection().createStatement();
+            ResultSet result = statement.executeQuery(query);
+            return result;
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+        }
+        return null;
+    }
+
+    /*
     private static ResultSet getPublicationsFromYearAuthor(String year, String author, String sortBy) 
     {
         try {
@@ -446,5 +517,5 @@ public class Queries {
 
         return publicationsData;
     }
-
+    */
 }

@@ -313,7 +313,15 @@ public class PublicationsAttrSearchView
                                 boolean displaySummary,
                                 boolean displayAuthor,
                                 String sortOption) {
-        
+
+        JPanel resultingTablesPanel = setUpFilteredOutputPanel();
+
+        ArrayList<ArrayList<String>> publicationData = Queries.getAllDataFromCustomSearch(author, title, year, type, sortOption);
+
+        handleResultPanel(author, title, year, type, displayPublicationId,
+                        displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
+                        sortOption, publicationData, resultingTablesPanel);
+        /*
         if (!author.isEmpty() && title.isEmpty() && year.isEmpty() && type.isEmpty())
         {
             JPanel resultingTablesPanel = setUpFilteredOutputPanel();
@@ -394,5 +402,6 @@ public class PublicationsAttrSearchView
                             displayTitle, displayYear, displayType, displaySummary, displayAuthor, 
                             sortOption, publicationData, resultingTablesPanel);
         }
+        */
     }
 }

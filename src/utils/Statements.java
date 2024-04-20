@@ -6,19 +6,16 @@ public class Statements {
     public static final String GET_AUTHORS_TABLE_QUERY = "SELECT * FROM AUTHORS";
     public static final String GET_PUBLICATION_FROM_ID_QUERY = "SELECT * FROM PUBLICATIONS WHERE PUBLICATIONID = %s";
     public static final String GET_AUTHOR_COUNT_QUERY = "SELECT COUNT(a.author) AS COUNT FROM AUTHORS a JOIN PUBLICATIONS p ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (a.PUBLICATIONID = %s)";
-    public static final String GET_PUBLICATIONS_FROM_AUTHOR_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (a.AUTHOR LIKE '%s')";
-    public static final String GET_PUBLICATIONS_FROM_ALL_INPUTS_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (a.AUTHOR LIKE '%s') AND (p.TITLE LIKE '%s') AND (p.YEAR LIKE '%s') AND (p.TYPE LIKE '%s')";
-    public static final String GET_PUBLICATIONS_FROM_ALL_AUTHOR_YEAR_TYPE_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (a.AUTHOR LIKE '%s') AND (p.YEAR LIKE '%s') AND (p.TYPE LIKE '%s')";
-    public static final String GET_PUBLICATIONS_FROM_YEAR_TYPE_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (p.YEAR LIKE '%s') AND (p.TYPE LIKE '%s')";
-    public static final String GET_PUBLICATIONS_FROM_YEAR_AUTHOR_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (p.YEAR LIKE '%s') AND (a.AUTHOR LIKE '%s')";
-    public static final String GET_PUBLICATIONS_FROM_YEAR_TITLE_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (p.YEAR LIKE '%s') AND (p.TITLE LIKE '%s')";
-    public static final String GET_PUBLICATIONS_FROM_AUTHOR_TITLE_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (a.AUTHOR LIKE '%s') AND (p.TITLE LIKE '%s')";
-    public static final String GET_PUBLICATIONS_FROM_TYPE_QUERY = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE (p.TYPE LIKE '%s')";
+    
+    // Beginning portion of query for custom search 
+    public static final String CUSTOM_SEARCH_HEADER = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE ";
 
-    //public static final String CONDITION_AUTHOR = " AND (a.AUTHOR LIKE '%s')";
-    //public static final String CONDITION_YEAR = " AND (p.YEAR LIKE '%s')";
-    //public static final String CONDITION_TYPE = " AND (p.TYPE LIKE '%s')";
-    //public static final String CONDITION_TITLE = " AND (p.TITLE LIKE '%s')";
+    // Conditions
+    public static final String CONDITION_AUTHOR = "(a.AUTHOR LIKE '%s')";
+    public static final String CONDITION_YEAR = "(p.YEAR LIKE '%s')";
+    public static final String CONDITION_TYPE = "(p.TYPE LIKE '%s')";
+    public static final String CONDITION_TITLE = "(p.TITLE LIKE '%s')";
+
     // Sort by
     public static final String ORDER_BY = " ORDER BY (%s)";
 }
