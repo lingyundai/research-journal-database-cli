@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -32,9 +33,15 @@ public class PublicationsIDSearchView
         publicationOptionPanel.setLayout(new BoxLayout(publicationOptionPanel, BoxLayout.Y_AXIS));
         JLabel label = new JLabel("Enter a Publication ID to search for:");
         publicationOptionPanel.add(label);
+        
+        JSeparator separator1 = new JSeparator();
+        publicationOptionPanel.add(separator1);
 
         JTextField publicationIDField = new javax.swing.JTextField();
         publicationOptionPanel.add(publicationIDField);
+
+        JSeparator separator2 = new JSeparator();
+        publicationOptionPanel.add(separator2);
 
         JButton backButton = new JButton("Back");
         JButton enterPublicationIdButton = new JButton("Enter");
@@ -52,8 +59,9 @@ public class PublicationsIDSearchView
                 Menu.backButtonActionPerformed();
             }
         });
-        publicationOptionPanel.add(backButton);
+        
         publicationOptionPanel.add(enterPublicationIdButton);
+        publicationOptionPanel.add(backButton);
         publicationOptionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         publicationOptionPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
         Menu.getMenuFrame().add(publicationOptionPanel);

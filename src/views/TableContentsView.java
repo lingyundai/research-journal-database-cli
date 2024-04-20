@@ -12,6 +12,7 @@ package views;
 import gui.Menu;
 import sql.Queries;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 
@@ -33,17 +35,28 @@ public class TableContentsView
         JLabel label = new JLabel("Select Tables to View:");
         contentsOptionPanel.add(label);
 
+        JSeparator separator1 = new JSeparator();
+        contentsOptionPanel.add(separator1);
+
+        JPanel contentsOptionSubPanel = new JPanel();
+        contentsOptionSubPanel.setLayout(new BorderLayout());
+
         JLabel publicationsOptionLabel = new JLabel("PUBLICATIONS:");
-        contentsOptionPanel.add(publicationsOptionLabel);
+        contentsOptionSubPanel.add(publicationsOptionLabel, BorderLayout.LINE_START);
         
         JCheckBox publicationsOptionCheckBox = new JCheckBox();
-        contentsOptionPanel.add(publicationsOptionCheckBox);
+        contentsOptionSubPanel.add(publicationsOptionCheckBox, BorderLayout.LINE_END);
 
         JLabel authorsOptionLabel = new JLabel("AUTHORS:");
-        contentsOptionPanel.add(authorsOptionLabel);
+        contentsOptionSubPanel.add(authorsOptionLabel, BorderLayout.LINE_START);
         
         JCheckBox authorsOptionCheckBox = new JCheckBox();
-        contentsOptionPanel.add(authorsOptionCheckBox);
+        contentsOptionSubPanel.add(authorsOptionCheckBox, BorderLayout.LINE_END);
+
+        contentsOptionPanel.add(contentsOptionSubPanel);
+
+        JSeparator separator2 = new JSeparator();
+        contentsOptionPanel.add(separator2);
         
         JButton enterTableOptionsButton = new JButton("Enter");
         enterTableOptionsButton.addActionListener(new java.awt.event.ActionListener() {

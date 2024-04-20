@@ -22,6 +22,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -35,6 +36,9 @@ public class PublicationsAttrSearchView
 
         JLabel label = new JLabel("Input fields:");
         attributePanel.add(label);
+
+        JSeparator separator1 = new JSeparator();
+        attributePanel.add(separator1);
 
         JLabel authorInputLabel = new javax.swing.JLabel("AUTHOR:");
         JTextField authorTextField = new javax.swing.JTextField();
@@ -56,10 +60,13 @@ public class PublicationsAttrSearchView
         attributePanel.add(typeInputLabel);
         attributePanel.add(typeTextField);
 
+        JSeparator separator2 = new JSeparator();
+        attributePanel.add(separator2);
+
         JButton backButton = new JButton("Back");
         JButton enterAttributeButton = new JButton("Enter");
-        attributePanel.add(backButton);
         attributePanel.add(enterAttributeButton);
+        attributePanel.add(backButton);
 
         enterAttributeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
