@@ -16,6 +16,8 @@ import views.PublicationsAttrSearchView;
 import views.PublicationsIDSearchView;
 import views.TableContentsView;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -74,6 +76,9 @@ public class Menu {
         JLabel label = new JLabel("Please enter credentials for signing in to Oracle SQL Server.");
         loginPanel.add(label);
 
+        JSeparator separator1 = new JSeparator();
+        loginPanel.add(separator1);
+
         JLabel loginLabel = new javax.swing.JLabel("Username:");
         JTextField loginTextField = new javax.swing.JTextField();
         loginPanel.add(loginLabel);
@@ -121,6 +126,18 @@ public class Menu {
         JLabel label = new JLabel("Please enter the directory for the .sql file you would like to load.");
         sqlFilePanel.add(label);
 
+        JSeparator separator1 = new JSeparator();
+        sqlFilePanel.add(separator1);
+
+        JLabel label2 = new JLabel("If no valid filepath is entered, the default shall be loaded.");
+        sqlFilePanel.add(label2);
+
+        JLabel label3 = new JLabel("(Default filepath is \"res/paper.sql\")");
+        sqlFilePanel.add(label3);
+
+        JSeparator separator2 = new JSeparator();
+        sqlFilePanel.add(separator2);
+
         JLabel sqlFileLabel = new javax.swing.JLabel("SQL File:");
         JTextField sqlFileTextField = new javax.swing.JTextField();
         sqlFilePanel.add(sqlFileLabel);
@@ -153,6 +170,15 @@ public class Menu {
         JLabel label = new JLabel("Main Menu");
         menuPanel.add(label);
 
+        JSeparator separator1 = new JSeparator();
+        separator1.setAlignmentY(Component.TOP_ALIGNMENT);
+        menuPanel.add(separator1);
+
+        JPanel menuSubOptionsPanel = new JPanel();
+        menuSubOptionsPanel.setLayout(new BorderLayout());
+        menuSubOptionsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        menuSubOptionsPanel.setAlignmentY(Component.TOP_ALIGNMENT);
+
         JButton tableContentsButton = new javax.swing.JButton("View Table Contents");
         tableContentsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,7 +186,7 @@ public class Menu {
             }
         });
 
-        menuPanel.add(tableContentsButton);
+        menuSubOptionsPanel.add(tableContentsButton, BorderLayout.NORTH);
 
         JButton publicationIdButton = new javax.swing.JButton("Search by PUBLICATIONID");
         publicationIdButton.addActionListener(new java.awt.event.ActionListener() {
@@ -169,7 +195,7 @@ public class Menu {
             }
         });
 
-        menuPanel.add(publicationIdButton);
+        menuSubOptionsPanel.add(publicationIdButton, BorderLayout.CENTER);
 
         JButton attributeButton = new javax.swing.JButton("Search by one or more attributes");
         attributeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -178,7 +204,17 @@ public class Menu {
             }
         });
 
-        menuPanel.add(attributeButton);
+        menuSubOptionsPanel.add(attributeButton, BorderLayout.SOUTH);
+        menuPanel.add(menuSubOptionsPanel);
+
+        JPanel menuSpacer = new JPanel();
+        menuSpacer.setLayout(new BorderLayout());
+        menuSpacer.add(new JPanel(), BorderLayout.CENTER);
+        menuPanel.add(menuSpacer);
+
+        JSeparator separator2 = new JSeparator();
+        separator2.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+        menuPanel.add(separator2);
 
         JButton exitButton = new javax.swing.JButton("Exit");
         exitButton.addActionListener(new java.awt.event.ActionListener() {
