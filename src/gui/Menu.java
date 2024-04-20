@@ -79,14 +79,21 @@ public class Menu {
         loginPanel.add(loginTextField);
 
         JLabel passwordLabel = new javax.swing.JLabel("Password");
-        JTextField passwordTextField = new javax.swing.JTextField();
+        JPasswordField passwordTextField = new javax.swing.JPasswordField();
         loginPanel.add(passwordLabel);
         loginPanel.add(passwordTextField);
         
         JButton enterButton = new javax.swing.JButton("Enter");
         enterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enterLoginButtonActionPerformed(evt, loginTextField.getText(), passwordTextField.getText());
+                char[] passwordArray = passwordTextField.getPassword();
+                String password = "";
+                for (char c : passwordArray) {
+                    password = password + c;
+                }
+                passwordArray = null;
+                enterLoginButtonActionPerformed(evt, loginTextField.getText(), password);
+                password = null;
             }
         });
 
