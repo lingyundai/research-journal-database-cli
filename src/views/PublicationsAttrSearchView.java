@@ -109,6 +109,9 @@ public class PublicationsAttrSearchView
         JLabel label = new JLabel("Output fields:");
         outputPanel.add(label);
 
+        JSeparator separator1 = new JSeparator();
+        outputPanel.add(separator1);
+
         JCheckBox publicationIdOptionCheckbox = new JCheckBox("PUBLICATIONID");
         outputPanel.add(publicationIdOptionCheckbox);
 
@@ -127,11 +130,17 @@ public class PublicationsAttrSearchView
         JCheckBox summaryOptionCheckbox = new JCheckBox("SUMMARY");
         outputPanel.add(summaryOptionCheckbox);
 
+        JSeparator separator2 = new JSeparator();
+        outputPanel.add(separator2);
+
         JLabel sortedBylabel = new JLabel("Sorted by:");
         outputPanel.add(sortedBylabel);
         String[] options = {"p.PUBLICATIONID", "a.AUTHOR", "p.TITLE", "p.YEAR", "p.TYPE", "p.SUMMARY"};
         JComboBox<String> sortOptionComboBox = new JComboBox<String>(options);
         outputPanel.add(sortOptionComboBox);
+
+        JSeparator separator3 = new JSeparator();
+        outputPanel.add(separator3);
 
         JButton enterOutputButton = new JButton("Enter");
         enterOutputButton.addActionListener(new java.awt.event.ActionListener() {

@@ -31,6 +31,7 @@ public class TableContentsView
     public static void populateTableOptionsPanel()
     {
         JPanel contentsOptionPanel = new JPanel();
+        contentsOptionPanel.setLayout(new BoxLayout(contentsOptionPanel, BoxLayout.Y_AXIS));
 
         JLabel label = new JLabel("Select Tables to View:");
         contentsOptionPanel.add(label);
@@ -40,18 +41,14 @@ public class TableContentsView
 
         JPanel contentsOptionSubPanel = new JPanel();
         contentsOptionSubPanel.setLayout(new BorderLayout());
-
-        JLabel publicationsOptionLabel = new JLabel("PUBLICATIONS:");
-        contentsOptionSubPanel.add(publicationsOptionLabel, BorderLayout.LINE_START);
+        contentsOptionSubPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentsOptionSubPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
         
-        JCheckBox publicationsOptionCheckBox = new JCheckBox();
-        contentsOptionSubPanel.add(publicationsOptionCheckBox, BorderLayout.LINE_END);
-
-        JLabel authorsOptionLabel = new JLabel("AUTHORS:");
-        contentsOptionSubPanel.add(authorsOptionLabel, BorderLayout.LINE_START);
+        JCheckBox publicationsOptionCheckBox = new JCheckBox("PUBLICATIONS");
+        contentsOptionSubPanel.add(publicationsOptionCheckBox, BorderLayout.NORTH);
         
-        JCheckBox authorsOptionCheckBox = new JCheckBox();
-        contentsOptionSubPanel.add(authorsOptionCheckBox, BorderLayout.LINE_END);
+        JCheckBox authorsOptionCheckBox = new JCheckBox("AUTHORS");
+        contentsOptionSubPanel.add(authorsOptionCheckBox, BorderLayout.SOUTH);
 
         contentsOptionPanel.add(contentsOptionSubPanel);
 
