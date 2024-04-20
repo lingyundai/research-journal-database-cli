@@ -14,6 +14,7 @@ import sql.Queries;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -37,22 +38,23 @@ public class TableContentsView
         contentsOptionPanel.add(label);
 
         JSeparator separator1 = new JSeparator();
+        separator1.setAlignmentY(Component.TOP_ALIGNMENT);
         contentsOptionPanel.add(separator1);
 
         JPanel contentsOptionSubPanel = new JPanel();
-        contentsOptionSubPanel.setLayout(new BorderLayout());
+        contentsOptionSubPanel.setLayout(new GridLayout(2, 1, 10, 20));
         contentsOptionSubPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        contentsOptionSubPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
         
         JCheckBox publicationsOptionCheckBox = new JCheckBox("PUBLICATIONS");
-        contentsOptionSubPanel.add(publicationsOptionCheckBox, BorderLayout.NORTH);
+        contentsOptionSubPanel.add(publicationsOptionCheckBox);
         
         JCheckBox authorsOptionCheckBox = new JCheckBox("AUTHORS");
-        contentsOptionSubPanel.add(authorsOptionCheckBox, BorderLayout.SOUTH);
+        contentsOptionSubPanel.add(authorsOptionCheckBox);
 
         contentsOptionPanel.add(contentsOptionSubPanel);
 
         JSeparator separator2 = new JSeparator();
+        separator2.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         contentsOptionPanel.add(separator2);
         
         JButton enterTableOptionsButton = new JButton("Enter");
