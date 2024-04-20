@@ -19,6 +19,7 @@ import views.TableContentsView;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -175,10 +176,9 @@ public class Menu {
         menuPanel.add(separator1);
 
         JPanel menuSubOptionsPanel = new JPanel();
-        menuSubOptionsPanel.setLayout(new BorderLayout());
+        menuSubOptionsPanel.setLayout(new GridLayout(3, 1, 20, 20));
         menuSubOptionsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        menuSubOptionsPanel.setAlignmentY(Component.TOP_ALIGNMENT);
-
+        
         JButton tableContentsButton = new javax.swing.JButton("View Table Contents");
         tableContentsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -186,7 +186,7 @@ public class Menu {
             }
         });
 
-        menuSubOptionsPanel.add(tableContentsButton, BorderLayout.NORTH);
+        menuSubOptionsPanel.add(tableContentsButton);
 
         JButton publicationIdButton = new javax.swing.JButton("Search by PUBLICATIONID");
         publicationIdButton.addActionListener(new java.awt.event.ActionListener() {
@@ -195,7 +195,7 @@ public class Menu {
             }
         });
 
-        menuSubOptionsPanel.add(publicationIdButton, BorderLayout.CENTER);
+        menuSubOptionsPanel.add(publicationIdButton);
 
         JButton attributeButton = new javax.swing.JButton("Search by one or more attributes");
         attributeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -204,7 +204,7 @@ public class Menu {
             }
         });
 
-        menuSubOptionsPanel.add(attributeButton, BorderLayout.SOUTH);
+        menuSubOptionsPanel.add(attributeButton);
         menuPanel.add(menuSubOptionsPanel);
 
         JPanel menuSpacer = new JPanel();
