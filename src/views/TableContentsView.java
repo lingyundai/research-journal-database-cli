@@ -1,6 +1,6 @@
 /**
  * File: TableContentsView.java
- * Authors: Lauren Dennedy G01462079, Lin Dai _________
+ * Authors: Lauren Dennedy G01462079, Lingyun Dai G01464288
  * Class: CS 550 Database Systems
  * Assignment: Group Project - Project 2
  * Created: 4/18

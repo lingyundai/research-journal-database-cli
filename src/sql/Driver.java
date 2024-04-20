@@ -1,4 +1,3 @@
-package sql;
 /**
  * File: Driver.java
  * Authors: Lauren Dennedy G01462079, Lingyun Dai G01464288
@@ -7,6 +6,8 @@ package sql;
  * Created: 4/17
  * Last Modified: 4/18
  */
+
+package sql;
 
 import java.sql.*;
 import oracle.jdbc.driver.*;
