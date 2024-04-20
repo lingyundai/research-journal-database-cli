@@ -20,10 +20,10 @@ public class Statements {
     public static final String CUSTOM_SEARCH_HEADER = "SELECT p.*, a.AUTHOR FROM PUBLICATIONS p JOIN AUTHORS a ON (a.PUBLICATIONID = p.PUBLICATIONID) WHERE ";
 
     // Conditions
-    public static final String CONDITION_AUTHOR = "(a.AUTHOR LIKE '%s')";
-    public static final String CONDITION_YEAR = "(p.YEAR LIKE '%s')";
-    public static final String CONDITION_TYPE = "(p.TYPE LIKE '%s')";
-    public static final String CONDITION_TITLE = "(p.TITLE LIKE '%s')";
+    public static final String CONDITION_AUTHOR = "(a.AUTHOR LIKE '" + "%%" + "%s" + "%%" + "')";
+    public static final String CONDITION_YEAR = "(p.YEAR LIKE '" + "%%" + "%s" + "%%" + "')";
+    public static final String CONDITION_TYPE = "(p.TYPE LIKE '" + "%%" + "%s" + "%%" + "')";
+    public static final String CONDITION_TITLE = "(p.TITLE LIKE '" + "%%" + "%s" + "%%" + "')";
 
     // Sort by
     public static final String ORDER_BY = " ORDER BY (%s)";
