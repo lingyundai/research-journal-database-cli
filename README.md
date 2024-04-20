@@ -32,9 +32,49 @@ This is because we have set up a custom run configuration in our .vscode launch.
 ![Main Menu](https://imgur.com/VGrMSB7.png)
 
 ### View Tables
+ - View Both Publications and Authors Table
 
+ ![Input 1](https://imgur.com/on3bxAx.png)
 
+ Result:
+ ![Output 1](https://imgur.com/xHHaLiK.png)
+
+- View Publications Table
+
+ ![Input 2](https://imgur.com/rJGqrRP.png)
+
+ Result:
+
+ ![Output 2](https://imgur.com/avKuQCL.png)
+
+- View Authors Table
+
+ ![Input 3](https://imgur.com/6Y4p33C.png)
+
+ Result:
+
+ ![Output 3](https://imgur.com/38OiAOc.png)
 
 ### Publication ID Search
+Input:
+
+![Publication ID Search](https://imgur.com/Yd8Vwli.png)
+
+Output:
+
+![Publication ID Result](https://imgur.com/fIKGB5z.png)
 
 ### Custom Search
+Input part 1 (Search by Attributes):
+
+![Input Part 1](https://imgur.com/wYTjOH6.png)
+
+Input part 2 (Attribute Filters and Sort By):
+
+![Input Part 2](https://imgur.com/YVbhAXm.png)
+
+Results:
+
+![Results](https://imgur.com/WvU5Wyy.png)
+
+Results will be sorted by the sort by option, only display the attributes selected as columns, and only display rows matching the search criteria!
